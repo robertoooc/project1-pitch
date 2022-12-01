@@ -6,11 +6,6 @@ canvas.setAttribute('width',getComputedStyle(canvas)['width'])
 
 //getting rendering context from the Canvas
 const ctx = canvas.getContext('2d')
-//creating pink little sqaure as a test subject for movement
-// ctx.fillStyle='pink'
-// ctx.fillRect(5,10,45,45)
-// ctx.fillStyle='red'
-// ctx.fillRect(5,100,45,45)
 
 //made a class that will help out with player movement
 class Players{
@@ -29,7 +24,6 @@ class Players{
 }
 
 
-
 let piglet = new Players(5,10,45,45,'pink')
 piglet.create()
 let butcher = new Players(5,100,45,45,'red')
@@ -38,10 +32,8 @@ let pressedKeys ={}
 
 const speed = 5;
 function movement(){
-    console.log('inside movement')
     if(pressedKeys.ArrowDown){
-    butcher.y += speed 
-    console.log(butcher.y)   
+    butcher.y += speed  
     }
     if(pressedKeys.ArrowUp){
         butcher.y -= speed
@@ -67,7 +59,6 @@ function movement(){
 }
 
     document.addEventListener('keydown', function(e){
-        console.log(e.key)
         pressedKeys[e.key] = true
         movement()
     
@@ -76,9 +67,20 @@ function movement(){
         pressedKeys[e.key] = false
         movement()
     })
-    function game(){
+    function defaultSetting(){
         ctx.fillStyle = "aquamarine"
         ctx.fillRect(0,0,canvas.width,canvas.height)
+        let leftWall = new Players(0,0,2,canvas.height,"orange")
+        leftWall.create()
+        let topWall = new Players(0,0,canvas.width,2,"orange")
+        topWall.create()
+        let rightWall = new Players(canvas.width -2,0,2,canvas.height,"orange")
+        rightWall.create()
+        let bottomWall = new Players(0,canvas.height-2,canvas.width,2,"orange")
+        bottomWall.create()
+    }
+    function game(){
+        defaultSetting()
         piglet.create()
         butcher.create()
     }
