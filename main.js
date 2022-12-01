@@ -25,13 +25,18 @@ class Players{
             ctx.fillStyle=this.color
             ctx.fillRect(this.x,this.y,this.width,this.height)
         }
+
 }
+
+
+
 let piglet = new Players(5,10,45,45,'pink')
 piglet.create()
 let butcher = new Players(5,100,45,45,'red')
 butcher.create()
 let pressedKeys ={}
-const speed = 1
+
+const speed = 5;
 function movement(){
     console.log('inside movement')
     if(pressedKeys.ArrowDown){
@@ -60,8 +65,7 @@ function movement(){
         piglet.x += speed  
     }
 }
-let testGameFunc = setInterval( function(){
-    ctx.clearRect(0,0,canvas.width,canvas.height)
+
     document.addEventListener('keydown', function(e){
         console.log(e.key)
         pressedKeys[e.key] = true
@@ -72,6 +76,11 @@ let testGameFunc = setInterval( function(){
         pressedKeys[e.key] = false
         movement()
     })
-butcher.create()
-piglet.create()
-},10)
+    function game(){
+        ctx.fillStyle = "aquamarine"
+        ctx.fillRect(0,0,canvas.width,canvas.height)
+        piglet.create()
+        butcher.create()
+    }
+    const refresh = setInterval(game, 50)
+
