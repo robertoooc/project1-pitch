@@ -32,17 +32,18 @@ let bottomWall = new Objects(0,canvas.height-1,canvas.width,1,"orange")
 // obstacle.create()
 // let line = new Objects()
 let access = true
-const downAccelerate = .5
+const downAccelerate = 0.5
 
 //made a class that will help out with player movement
 class Players{
     constructor(x,y,color){
+        this.name
         this.x = x
         this.y = y
         this.access
         this.jump = {
             up: 10,
-            gravity: 10
+            gravity: 7
         }
         this.width = (canvas.height)/21
         this.height = (canvas.width)/30
@@ -55,36 +56,32 @@ class Players{
         gravityUpdate(){
             this.create()
             this.y+=this.jump.gravity
-            console.log(access)
+
 
             if(access ==false){
                 this.jump.gravity = 0
             }
             this.jump.y+=downAccelerate
         }
-        // jumpUpdate(){
-        //     this.create()
-        //     this.y+=this.jump.up
-        // }
-
-}
-
-let butcher = new Players(5,10,'red')
-butcher.create()
- let piglet = new Players(40,90,'pink')
-piglet.create()
-
-
-let pressedKeys ={}
-
-
-
-const speed = 5;
-function movement(){
-    if(pressedKeys.ArrowDown){
-    butcher.y += speed  
-    }
-    if(pressedKeys.ArrowUp){
+            
+        }
+        
+        let butcher = new Players(5,10,'red')
+        butcher.create()
+        let piglet = new Players(40,90,'pink')
+        piglet.create()
+        
+        
+        let pressedKeys ={}
+        
+        
+        
+        const speed = 2;
+        function movement(){
+            if(pressedKeys.ArrowDown){
+                butcher.y += speed  
+            }
+            if(pressedKeys.ArrowUp){
         butcher.y -= speed
     }
     if(pressedKeys.ArrowLeft){
@@ -110,17 +107,17 @@ function movement(){
     access = true
 }
 
-    document.addEventListener('keydown', function(e){
-        pressedKeys[e.key] = true
-        movement()
+document.addEventListener('keydown', function(e){
+    pressedKeys[e.key] = true
+    movement()
     
-    })
-    document.addEventListener('keyup', function(e){
-        pressedKeys[e.key] = false
-        movement()
-    })
-    function defaultSetting(){
-        ctx.fillStyle = "aquamarine"
+})
+document.addEventListener('keyup', function(e){
+    pressedKeys[e.key] = false
+    movement()
+})
+function defaultSetting(){
+    ctx.fillStyle = "aquamarine"
         ctx.fillRect(0,0,canvas.width,canvas.height)
         leftWall.create()
         topWall.create()
@@ -132,25 +129,35 @@ function movement(){
         defaultSetting()
         butcher.gravityUpdate()
         piglet.gravityUpdate()
-    
-        obstacleBump(butcher,bottomWall)
+        console.log(access)
+        
         obstacleBump(piglet,bottomWall)
-
+        //obstacleBump(butcher,bottomWall)
+        
     }
+    // function onTop(obj1,obj2){
+
+    // }
     function obstacleBump(obj1,obj2){
-         const bSide = obj2.y + obj2.height <= obj1.y
-         const lSide = obj2.x + obj2.width <= obj1.x
-         const rSide = obj1.x + obj1.width <= obj2.x 
-         const tSide = obj1.y + obj1.height <= obj2.y
-         if(bSide==false&&tSide==false&&lSide==false&&rSide==false){
-            access = false
-            console.log('game should end now')
-         }
-         else{
-            access = true
-         }
-
+        const bSide = obj2.y + obj2.height <= obj1.y
+        const lSide = obj2.x + obj2.width <= obj1.x
+        const rSide = obj1.x + obj1.width <= obj2.x 
+        const tSide = obj1.y + obj1.height <= obj2.y
+        //console.log(obj1.y + obj1.height<= obj2.y)
+        if(bSide==false&&tSide==false&&lSide==false&&rSide==false){
+           access = false
+           //console.log('game should end now')
+        }
+        else{
+           access = true
+        }
+    
     }
-    const refresh = setInterval(game, 50)
-
- 
+    
+    const refresh = setInterval( function(){
+        if(access==true){
+            game()
+        }
+    } , 80)
+    
+    
