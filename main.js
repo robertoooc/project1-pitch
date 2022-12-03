@@ -42,7 +42,7 @@ let topWall = new Objects(0,0,canvas.width,5,"orange")
 let rightWall = new Objects(canvas.width -5,0,5,canvas.height,"orange")
 let bottomWall = new Objects(0,canvas.height-5,canvas.width,5,"orange")
 
-let block = new Objects(290,cHeight-50,50,50,"orange")
+let block = new Objects(0,150,cWidth-100,50,"orange")
 
 
 
@@ -79,19 +79,15 @@ class Players{
             this.create()
             this.y+=this.jump.gravity
             this.y-=this.jump.up
-            if(this.y + this.height + this.jump.gravity < cHeight){
+            if((this.y + this.height + this.jump.gravity < cHeight)&&((this.y+this.height+this.jump.gravity < block.y)&&access1 != false)){
+                console.log(false!=access1)
                 this.jump.gravity+=downAccelerate             
             }
             else{
                 this.jump.gravity = 0
                 this.jump.up = 0
-
-            }
-        
-        
-        }
-
-            
+            }        
+        }            
         }
         
         let butcher = new Players(5,10,'red')
@@ -233,6 +229,7 @@ class Players{
                 while(q<obsx.length){       
                     if(((obj1.x == obsx[q])||(subx ==obsx[q]))||((obj1.x == obsx[q])&&(subx ==obsx[q]))){
                         access1 = false
+                        console.log(access1)
                     }         
                     q++
                 }
@@ -285,167 +282,3 @@ class Players{
     
     }
     
-    //const refresh = setInterval(game, 10)
-    
-    
-
-
-
-
-
-
-
-// let p = document.querySelector('p')
-// const canvas = document.querySelector('canvas')
-// const ctx = canvas.getContext('2d')
-// let cWidth = parseInt(window.getComputedStyle(canvas)['width'])
-// let cHeight = parseInt(window.getComputedStyle(canvas)['height'])
-// let checkheight = false
-// let checkwidth = false
-// let check =false
-// while(check==false){
-//  cWidth % 10!==0 ? cWidth++ : checkwidth = true
-//  cHeight % 10!==0 ? cHeight++ : checkheight = true
-//  checkwidth&&checkheight ? check=true : check =false
-// }
-// canvas.setAttribute('height',cHeight.toString())
-// canvas.setAttribute('width',cWidth.toString())
-
-// // canvas.height = window.innerHeight
-// // canvas.width= window.innerWidth
-// // console.log(canvas.height)
-
-// let access = true
-
-
-// const downAccelerate = 1
-
-// class Players{
-//     constructor(color){
-//         this.name
-//         this.coordinates= {
-//             x: 0,
-//             y:0
-//         }
-//         // this.x = 0
-//         // this.y = 0
-//         this.access
-//         this.jump = {
-//             up: 0,
-//             gravity: 0
-//         }
-//         this.width = 10
-//         this.height = 10
-//         this.color = color
-//     }
-//     create(){
-//         ctx.fillStyle=this.color
-//         ctx.fillRect(this.coordinates.x,this.coordinates.y,this.width,this.height)
-//     }
-//     gravityUpdate(){
-//         p.innerText = `${cHeight}, ${this.coordinates.y+this.height}`
-//         this.create()
-//         this.coordinates.y+=this.jump.gravity
-        
-//         if(this.coordinates.y + this.height <= cHeight){
-//             this.jump.gravity+=downAccelerate               
-//         }
-//         else{
-//             //this.coordinates.y = cHeight-this.height
-//             this.jump.gravity = 0
-//             console.log(this.coordinates.y + this.height)
-//         }
-//     }          
-// }
-// let piglet = new Players('pink')
-// animate()
-
-
-//         let pressedKeys ={}
-        
-        
-//         function defaultSetting(){
-//             ctx.fillStyle = "aquamarine"
-//             ctx.fillRect(0,0,cWidth,cHeight)
-//         }
-        
-//         function animate(){
-//             defaultSetting()
-//             piglet.gravityUpdate()
-//             //console.log(piglet.y)
-//             document.addEventListener('keydown', function(e){
-//                 pressedKeys[e.key] = true
-//                 movement()       
-//             })
-//             document.addEventListener('keyup', function(e){
-//                 pressedKeys[e.key] = false
-//                 movement()
-//             }) 
-//             requestAnimationFrame(animate)
-//         }
-        
-//         const speed = 5;
-//         function movement(){
-//             if(pressedKeys.ArrowUp){
-//                 butcher.jump.up -= speed
-//             }
-//             if(pressedKeys.ArrowLeft){
-//                 butcher.coordinates.x -=speed
-//             }
-//             if(pressedKeys.ArrowRight){
-//                 butcher.coordinates.x +=speed
-//             }
-//             if( pressedKeys.a){
-//                 piglet.coordinates.y += speed 
-//                  console.log(piglet.coordinates.y)
-//             }
-//             if(pressedKeys.w){
-//                 piglet.jump.up -= speed                  
-//             }
-//             if(pressedKeys.d){
-//                 piglet.coordinates.x+=speed                
-//             }   
-//     // access = true
-// }
-
-
-// // function game(){d
-// //     // defaultSetting()
-// //     piglet.gravityUpdate()
-// //     document.addEventListener('keydown', function(e){
-// //         pressedKeys[e.key] = true
-// //         movement()       
-// //     })
-// //     document.addEventListener('keyup', function(e){
-// //         pressedKeys[e.key] = false
-// //         movement()
-// //     })        
-// //     }
-
-
-
-//     // function obstacleBump(obj1,obj2){
-//     //     const bSide = obj2.y + obj2.height <= obj1.y
-//     //     const lSide = obj2.x + obj2.width <= obj1.x
-//     //     const rSide = obj1.x + obj1.width <= obj2.x 
-//     //     const tSide = obj1.y + obj1.height <= obj2.y
-//     //     if(bSide==false&&tSide==false&&lSide==false&&rSide==false){
-//     //        access = false
-//     //     }
-//     //     else{
-//     //        access = true
-//     //     }   
-//     // }
-    
-    
-
-
-
-
-
-
-
-
-
-
-
