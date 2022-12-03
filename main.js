@@ -4,6 +4,7 @@ let p = document.querySelector('p')
 
 let cWidth = parseInt(window.getComputedStyle(canvas)['width'])
 let cHeight = parseInt(window.getComputedStyle(canvas)['height'])
+let access1, access2
 
 let checkheight = false
 let checkwidth = false
@@ -71,7 +72,7 @@ class Players{
     }
         create(){
             ctx.fillStyle=this.color
-            ctx.fillRect(this.x,this.y,this.width,this.height)
+                ctx.fillRect(this.x,this.y,this.width,this.height)         
         }
         gravityUpdate(){
             p.innerText = `${cHeight}, ${this.y+this.height}`
@@ -79,11 +80,9 @@ class Players{
             this.y+=this.jump.gravity
             this.y-=this.jump.up
             if(this.y + this.height + this.jump.gravity < cHeight){
-                this.jump.gravity+=downAccelerate
-                
+                this.jump.gravity+=downAccelerate             
             }
             else{
-                //this.y = (cHeight- this.height)
                 this.jump.gravity = 0
                 this.jump.up = 0
 
@@ -91,11 +90,7 @@ class Players{
         
         
         }
-        shiftLeft(){
-            // this.x -speed
-            // console.log(speed)
-            this.gravityUpdate()
-        }
+
             
         }
         
@@ -111,31 +106,43 @@ class Players{
         
         function movement(){
             
-            if(pressedKeys.ArrowUp&&butcher.jump.gravity==0){
-                butcher.jump.gravity = -15
+            if(pressedKeys.ArrowUp&&butcher.jump.gravity==0 && access==true ){
+                butcher.jump.up +=speed
                 console.log(butcher.x,butcher.y)
-            }
-            if(pressedKeys.ArrowLeft){
+            }else{
+                //consoe
+            }  
+            if(pressedKeys.ArrowLeft && access==true ){
                 //butcher.shiftLeft()
                  butcher.x -= speed
                  //console.log(butcher.x,butcher.y)
+            }else if(pressedKeys.ArrowLeft && access!=true ){
+                butcher.x += speed
             }
-            if(pressedKeys.ArrowRight){
+            if(pressedKeys.ArrowRight && access==true ){
                 butcher.x +=speed
                 //console.log(butcher.x,butcher.y)
+            }else if(pressedKeys.ArrowRight && access!=true ){
+                butcher.x -=speed
             }
-            if( pressedKeys.a){
+            if( pressedKeys.a && access==true ){
                  piglet.x -= speed
                  //console.log(piglet.x,piglet.y)  
                 //piglet.shiftLeft()
+            }else if( pressedKeys.a && access!=true ){
+                piglet.x += speed
             }
-            if(pressedKeys.w&&piglet.jump.gravity==0){
+            if(pressedKeys.w&&piglet.jump.gravity==0 && access==true ){
                 piglet.jump.up += speed
                 //wconsole.log(piglet.x,piglet.y)                  
+            }else if(pressedKeys.w&&piglet.jump.gravity==0 && access!=true ){
+                //piglet.jump.up += speed
             }
-            if(pressedKeys.d){
+            if(pressedKeys.d && access==true ){
                 piglet.x+=speed
                 //console.log(piglet.x,piglet.y)                                
+            }else if(pressedKeys.d && access!=true ){
+                piglet.x-=speed
             }
     
     access = true
@@ -203,15 +210,62 @@ class Players{
         let obsx =[]
         let obsy =[]
 
+        for(let i = obj2.x;i <=sub2x ;i++){
+            obsx.push(i)
+        }
+        for(let i = obj2.y;i <=sub2y ;i++){
+            obsy.push(i)
+        }
+        //console.log(obsx)
+        //for(let i in obsx){
+            let access1 = true
+            let access2 = true
+            let processed = false
+            while(processed !== true){
+                let w = 0
+                while(w<obsy.length){  
+                    if(((obj1.y == obsy[w])||(suby ==obsy[w]))||((obj1.y == obsy[w])&&(suby ==obsy[w]))){
+                        access2 = false
+                    }              
+                    w++
+                }
+                let q = 0
+                while(q<obsx.length){       
+                    if(((obj1.x == obsx[q])||(subx ==obsx[q]))||((obj1.x == obsx[q])&&(subx ==obsx[q]))){
+                        access1 = false
+                    }         
+                    q++
+                }
+                if(access1==false&&access2==false){
+                    access = false
+                }
+                else{
+                    access = true
+                }
+                processed = true
+            }
+        
+            //console.log(obsx[i], obj1.x, subx)
+
+            // if(((obj1.x == obsx[i])||(subx ==obsx[i]))||((obj1.x == obsx[i])&&(subx ==obsx[i]))){
+            //     //console.log("access denied")
+            // }
+
+        //}
+        // for(let i in obsy){
+        //     if(((obj1.y == obsy[i])||(suby ==obsy[i]))||((obj1.y == obsy[i])&&(suby ==obsy[i]))){
+        //         //console.log("access denied")
+        //     }
+        // }
         //console.log(subx>=obj2.x) as soon as piglet touches obstacle right its true
         //console.log(sub2x<=obj1.x) //as soon as piglet touches obstacle left its true
     //console.log((subx>=obj2.x)&&(sub2x<=obj1.x))
-    if(sub2x<=obj1.x){
-        console.log('piglet touched obstacles right')
-    }
-    if(subx>=obj2.x){
-        console.log('piglet touched obstacles left')
-    }
+    // if(sub2x<=obj1.x){
+    //     console.log('piglet touched obstacles right')
+    // }
+    // if(subx>=obj2.x){
+    //     console.log('piglet touched obstacles left')
+    // }
         let tSide = obj1.y + obj1.height <= obj2.y
         let bSide = obj2.y + obj2.height <= obj1.y
         let rSide = obj1.x + obj1.width <= obj2.x 
