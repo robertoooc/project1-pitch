@@ -41,6 +41,7 @@ let topWall = new Objects(0,0,canvas.width,5,"orange")
 let rightWall = new Objects(canvas.width -5,0,5,canvas.height,"orange")
 let bottomWall = new Objects(0,canvas.height-5,canvas.width,5,"orange")
 
+let block = new Objects(290,cHeight-50,50,50,"orange")
 
 
 
@@ -48,7 +49,8 @@ let bottomWall = new Objects(0,canvas.height-5,canvas.width,5,"orange")
 // obstacle.create()
 // let line = new Objects()
 let access = true
-const speed = 5;
+const speed = 10;
+//const jump = 200
 const downAccelerate = .5
 
 //made a class that will help out with player movement
@@ -75,6 +77,7 @@ class Players{
             p.innerText = `${cHeight}, ${this.y+this.height}`
             this.create()
             this.y+=this.jump.gravity
+            this.y-=this.jump.up
             if(this.y + this.height + this.jump.gravity < cHeight){
                 this.jump.gravity+=downAccelerate
                 
@@ -82,6 +85,8 @@ class Players{
             else{
                 //this.y = (cHeight- this.height)
                 this.jump.gravity = 0
+                this.jump.up = 0
+
             }
         
         
@@ -105,14 +110,14 @@ class Players{
         
         
         function movement(){
-
-            if(pressedKeys.ArrowUp){
-                butcher.y -= speed
-                //console.log(butcher.x,butcher.y)
+            
+            if(pressedKeys.ArrowUp&&butcher.jump.gravity==0){
+                butcher.jump.gravity = -15
+                console.log(butcher.x,butcher.y)
             }
             if(pressedKeys.ArrowLeft){
                 //butcher.shiftLeft()
-                 butcher.x -=speed
+                 butcher.x -= speed
                  //console.log(butcher.x,butcher.y)
             }
             if(pressedKeys.ArrowRight){
@@ -124,9 +129,9 @@ class Players{
                  //console.log(piglet.x,piglet.y)  
                 //piglet.shiftLeft()
             }
-            if(pressedKeys.w){
-                piglet.y -= speed
-                //console.log(piglet.x,piglet.y)                  
+            if(pressedKeys.w&&piglet.jump.gravity==0){
+                piglet.jump.up += speed
+                //wconsole.log(piglet.x,piglet.y)                  
             }
             if(pressedKeys.d){
                 piglet.x+=speed
@@ -138,6 +143,7 @@ class Players{
         function defaultSetting(){
             ctx.fillStyle = "aquamarine"
             ctx.fillRect(0,0,cWidth,cHeight)
+            block.create()
         }
         
         function animate(){
@@ -145,18 +151,19 @@ class Players{
             butcher.gravityUpdate()
             piglet.gravityUpdate()
             //console.log(piglet.y)
+            obstacleBump(piglet,block)
             requestAnimationFrame(animate)
         }
 
         document.addEventListener('keydown', function(e){
             pressedKeys[e.key] = true
             movement()       
-            console.log('left')
+            
         })
         document.addEventListener('keyup', function(e){
             pressedKeys[e.key] = false
             movement()
-            console.log('ok')
+            
         }) 
         // function defaultSetting(){
 //     ctx.fillStyle = "aquamarine"
@@ -186,16 +193,37 @@ class Players{
         
 //     }
     // function onTop(obj1){
-    //     const tSide = obj1.y + obj1.height <= canvas.height
+    //     const tSide = obj1.y + obj1.height <=anv cas.height
     // }
     function obstacleBump(obj1,obj2){
-        const bSide = obj2.y + obj2.height <= obj1.y
-        const lSide = obj2.x + obj2.width <= obj1.x
-        const rSide = obj1.x + obj1.width <= obj2.x 
-        const tSide = obj1.y + obj1.height <= obj2.y
+        let subx = obj1.x+obj1.width
+        let suby = obj1.y+obj1.height
+        let sub2x = obj2.x+obj2.width
+        let sub2y = obj2.y+obj2.height
+        let obsx =[]
+        let obsy =[]
+
+        //console.log(subx>=obj2.x) as soon as piglet touches obstacle right its true
+        //console.log(sub2x<=obj1.x) //as soon as piglet touches obstacle left its true
+    //console.log((subx>=obj2.x)&&(sub2x<=obj1.x))
+    if(sub2x<=obj1.x){
+        console.log('piglet touched obstacles right')
+    }
+    if(subx>=obj2.x){
+        console.log('piglet touched obstacles left')
+    }
+        let tSide = obj1.y + obj1.height <= obj2.y
+        let bSide = obj2.y + obj2.height <= obj1.y
+        let rSide = obj1.x + obj1.width <= obj2.x 
+        let lSide = obj2.x + obj2.width <= obj1.x
+        // console.log(bSide, "underneath")
+        // console.log(lSide, "left")
+        // console.log(rSide, "right")
+        // console.log(tSide, "top")
         //console.log(obj1.y + obj1.height<= obj2.y)
         if(bSide==false&&tSide==false&&lSide==false&&rSide==false){
            access = false
+           //console.log('nono')
         }
         else{
            access = true
