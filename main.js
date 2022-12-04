@@ -54,11 +54,19 @@ class Objects{
 //let rightWall = new Objects(canvas.width -5,0,5,canvas.height,"orange")
 //let bottomWall = new Objects(0,canvas.height-5,canvas.width,5,"orange")
 
-let block = new Objects(10,cHeight-70,cWidth-100,20,"orange")
-let block2 = new Objects(10,90,300,10,"black")
-let block3 = new Objects(250,140,200,10,"black")
-let block4 = new Objects(10,190,400,10,"black")
-let block5 = new Objects(400,290,100,10,"black")
+let block = new Objects(0,cHeight-20,cWidth,20,"orange")
+let block2 = new Objects(0,50,300,20,"black")
+let block3 = new Objects(0,130,300,20,"black")
+let block4 = new Objects(70,240,cWidth-70,20,"black")
+let block5 = new Objects(0,390,cWidth-70,20,"black")
+
+let block6 = new Objects(0,490,100,20,"black")
+let block7 = new Objects(190,490,160,20,"black")
+let block8 = new Objects(440,490,cWidth-440,20,"black")
+
+let block9 = new Objects(0,590,70,20,"black")
+let block10 = new Objects(130,590,370,20,"black")
+let block11 = new Objects(cWidth-70,590,70,20,"black")
 
 // let obstacle = new Objects(300,54,50,50,"black")
 // obstacle.create()
@@ -269,6 +277,12 @@ class Players{
             block3.create()
             block4.create()
             block5.create()
+            block6.create()
+            block7.create()
+            block8.create()
+            block9.create()
+            block10.create()
+            block11.create()
         }
         
         document.addEventListener('keydown', function(e){
@@ -288,14 +302,20 @@ class Players{
         
         function animate(){
             defaultSetting()
-            //movement()
             butcher.gravityUpdate()
             piglet.gravityUpdate()
-            if(grid[piglet.x][piglet.y+piglet.height]=='taken'||grid[piglet.x][piglet.y+piglet.height+piglet.jump.gravity]=='taken'){
+            //movement()
+            if((piglet.jump.gravity != 0 &&grid[piglet.x][piglet.y+piglet.height]=='taken'||grid[piglet.x][piglet.y+piglet.height+piglet.jump.gravity]=='taken')&&(piglet.jump.gravity != 0 &&grid[piglet.x+piglet.width][piglet.y+piglet.height]=='taken'||grid[piglet.x][piglet.y+piglet.height+piglet.jump.gravity]=='taken')){
                 piglet.jump.gravity =0
                 piglet.jump.up =0
+                console.log('pig')
             }
-
+            if(butcher.jump.gravity != 0 &&grid[butcher.x+butcher.width][butcher.y+butcher.height]=='taken'||grid[butcher.x][butcher.y+butcher.height+butcher.jump.gravity]=='taken'){
+                butcher.jump.gravity =0
+                butcher.jump.up =0
+                console.log('butcher')
+            }
+            //obstacleBump(piglet,butcher)
 
 
 
@@ -335,39 +355,39 @@ class Players{
             //     const tSide = obj1.y + obj1.height <=anv cas.height
             // }
             function obstacleBump(obj1,obj2){
-                let subx = obj1.x+obj1.width
-                let suby = obj1.y+obj1.height
-                let sub2x = obj2.x+obj2.width
-                let sub2y = obj2.y+obj2.height
-                let obsx =[]
-                let obsy =[]
-                for(let i = obj2.x;i <=sub2x ;i++){
-                    obsx.push(i)
-                }
-        for(let i = obj2.y;i <=sub2y ;i++){
-            obsy.push(i)
-        }
-        access1 = true
-        access2 = true
-        let processed = false
-        while(processed !== true){
-            let w = 0
-            while(w<obsy.length){  
+        //         let subx = obj1.x+obj1.width
+        //         let suby = obj1.y+obj1.height
+        //         let sub2x = obj2.x+obj2.width
+        //         let sub2y = obj2.y+obj2.height
+        //         let obsx =[]
+        //         let obsy =[]
+        //         for(let i = obj2.x;i <=sub2x ;i++){
+        //             obsx.push(i)
+        //         }
+        // for(let i = obj2.y;i <=sub2y ;i++){
+        //     obsy.push(i)
+        // }
+        // access1 = true
+        // access2 = true
+        // let processed = false
+        // while(processed !== true){
+        //     let w = 0
+        //     while(w<obsy.length){  
                 
                 
-                ((obj1.y == obsy[w])||(suby ==obsy[w]))||((obj1.y == obsy[w])&&(suby ==obsy[w])) ? access2 =false: access2=true              
-                w++
-            }
-            let q = 0
-            while(q<obsx.length-1){       
-                ((obj1.x == obsx[q])||(subx ==obsx[q]))||((obj1.x == obsx[q])&&(subx ==obsx[q])) ? access1 = true: access1 =false         
-                //console.log(access1)
-                q++
-            }
-            access1==false&&access2==false ? access = false: access = true
-            processed = true
-            //console.log(access1,access2,access)
-        }
+        //         ((obj1.y == obsy[w])||(suby ==obsy[w]))||((obj1.y == obsy[w])&&(suby ==obsy[w])) ? access2 =false: access2=true              
+        //         w++
+        //     }
+        //     let q = 0
+        //     while(q<obsx.length-1){       
+        //         ((obj1.x == obsx[q])||(subx ==obsx[q]))||((obj1.x == obsx[q])&&(subx ==obsx[q])) ? access1 = true: access1 =false         
+        //         //console.log(access1)
+        //         q++
+        //     }
+        //     access1==false&&access2==false ? access = false: access = true
+        //     processed = true
+        //     //console.log(access1,access2,access)
+        // }
         // if(((obj1.x == obsx[i])||(subx ==obsx[i]))||((obj1.x == obsx[i])&&(subx ==obsx[i]))){
             //     //console.log("access denied")
             // }
@@ -387,19 +407,19 @@ class Players{
     // if(subx>=obj2.x){
     //     console.log('piglet touched obstacles left')
     // }
-        // let tSide = obj1.y + obj1.height <= obj2.y
-        // let bSide = obj2.y + obj2.height <= obj1.y
-        // let rSide = obj1.x + obj1.width <= obj2.x 
-        // let lSide = obj2.x + obj2.width <= obj1.x
-        // // console.log(bSide, "underneath")
-        // // console.log(lSide, "left")
-        // // console.log(rSide, "right")
-        // // console.log(tSide, "top")
-        // //console.log(obj1.y + obj1.height<= obj2.y)
-        // if(bSide==false&&tSide==false&&lSide==false&&rSide==false){
-        //    access = false
-        //    //console.log('nono')
-        // }
+        let tSide = obj1.y + obj1.height <= obj2.y
+        let bSide = obj2.y + obj2.height <= obj1.y
+        let rSide = obj1.x + obj1.width <= obj2.x 
+        let lSide = obj2.x + obj2.width <= obj1.x
+        // console.log(bSide, "underneath")
+        // console.log(lSide, "left")
+        // console.log(rSide, "right")
+        // console.log(tSide, "top")
+        //console.log(obj1.y + obj1.height<= obj2.y)
+        if(bSide==false&&tSide==false&&lSide==false&&rSide==false){
+           console.log('touch')
+           //console.log('nono')
+        }
         // else{
         //    access = true
         //}
