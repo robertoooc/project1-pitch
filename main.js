@@ -1,10 +1,14 @@
 let pressedKeys ={}
 const canvas = document.getElementById('canvas')
+let endGame = false
+let endButton = document.getElementById('end')
+endButton.addEventListener('click',function(){
+    endGame = true    
+})
+
 let p = document.querySelector('p')
 let cWidth = parseInt(window.getComputedStyle(canvas)['width'])
 let cHeight = parseInt(window.getComputedStyle(canvas)['height'])
-let access1, access2
-let fall = true
 let checkheight = false
 let checkwidth = false
 let check =false
@@ -70,16 +74,15 @@ let obstacle3=new Objects(490,470,20,20,"black")
 let obstacle4=new Objects(440,cHeight-40,20,20,"black")
 let finishLine = new Objects(0,cHeight-70,50,50,"blue" )
 
-let access 
 const speed = 10;
 const downAccelerate = 1
 class Players{
     constructor(x,y,color){
-        this.name
+        //this.name
         this.x = x
         this.y = y
-        this.count=0
-        this.falling = false
+        //this.count=0
+        //this.falling = false
         this.jump = {
             up: 0,
             gravity: 0
@@ -175,15 +178,20 @@ class Players{
         }       
         document.addEventListener('keydown', function(e){
             pressedKeys[e.key] = true
-            movement()         
+            if(endGame==false){
+                movement()         
+            }
         })
         document.addEventListener('keyup', function(e){
             pressedKeys[e.key] = false
-            movement()            
+            if(endGame==false){
+                movement()         
+            }            
         }) 
         
         function animate(){
             defaultSetting()
+
             butcher.gravityUpdate()
             piglet.gravityUpdate()
             if((piglet.jump.gravity != 0 &&grid[piglet.x][piglet.y+piglet.height]=='taken'||grid[piglet.x][piglet.y+piglet.height+piglet.jump.gravity]=='taken')&&(piglet.jump.gravity != 0 &&grid[piglet.x+piglet.width][piglet.y+piglet.height]=='taken'||grid[piglet.x][piglet.y+piglet.height+piglet.jump.gravity]=='taken')){
@@ -197,7 +205,9 @@ class Players{
                 //console.log('butcher')
             }
             obstacleBump(piglet,butcher,finishLine)
-            requestAnimationFrame(animate)
+            if(endGame==false){
+                requestAnimationFrame(animate)
+            }
         }
             function obstacleBump(obj1,obj2,finishLine){
                 let tSide = obj1.y + obj1.height <= obj2.y
@@ -206,9 +216,12 @@ class Players{
                 let lSide = obj2.x + obj2.width <= obj1.x
                 if(bSide==false&&tSide==false&&lSide==false&&rSide==false){
                    console.log('butcher wins')
+                   endGame = true
                 }
                 if(grid[obj1.x][obj1.y]=='finishLine'){
                     console.log('pig wins')
+                    endGame = true
                 }
     }
+
     
