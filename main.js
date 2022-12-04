@@ -41,6 +41,15 @@ class Objects{
         }
         ctx.fillStyle=this.color
         ctx.fillRect(this.x,this.y,this.width,this.height)
+    }
+    end(){
+        for(let i = this.x; i <=this.x+this.width; i++){
+            for(let j = this.y; j<=this.y+this.height; j++){
+                grid[i][j]='finishLine'
+            }
+        }
+        ctx.fillStyle=this.color
+        ctx.fillRect(this.x,this.y,this.width,this.height)
     } 
 }
 
@@ -59,6 +68,7 @@ let obstacle1 =new Objects(156,220,20,20,"black")
 let obstacle2=new Objects(400,220,20,20,"black")
 let obstacle3=new Objects(490,470,20,20,"black")
 let obstacle4=new Objects(440,cHeight-40,20,20,"black")
+let finishLine = new Objects(0,cHeight-70,50,50,"blue" )
 
 let access 
 const speed = 10;
@@ -160,6 +170,7 @@ class Players{
             obstacle2.create()
             obstacle3.create()
             obstacle4.create()
+            finishLine.end()
 
         }       
         document.addEventListener('keydown', function(e){
@@ -178,23 +189,26 @@ class Players{
             if((piglet.jump.gravity != 0 &&grid[piglet.x][piglet.y+piglet.height]=='taken'||grid[piglet.x][piglet.y+piglet.height+piglet.jump.gravity]=='taken')&&(piglet.jump.gravity != 0 &&grid[piglet.x+piglet.width][piglet.y+piglet.height]=='taken'||grid[piglet.x][piglet.y+piglet.height+piglet.jump.gravity]=='taken')){
                 piglet.jump.gravity =0
                 piglet.jump.up =0
-                console.log('pig')
+                //console.log('pig')
             }
             if(butcher.jump.gravity != 0 &&grid[butcher.x+butcher.width][butcher.y+butcher.height]=='taken'||grid[butcher.x][butcher.y+butcher.height+butcher.jump.gravity]=='taken'){
                 butcher.jump.gravity =0
                 butcher.jump.up =0
-                console.log('butcher')
+                //console.log('butcher')
             }
-            //obstacleBump(piglet,butcher)
+            obstacleBump(piglet,butcher,finishLine)
             requestAnimationFrame(animate)
         }
-            function obstacleBump(obj1,obj2){
+            function obstacleBump(obj1,obj2,finishLine){
                 let tSide = obj1.y + obj1.height <= obj2.y
                 let bSide = obj2.y + obj2.height <= obj1.y
                 let rSide = obj1.x + obj1.width <= obj2.x 
                 let lSide = obj2.x + obj2.width <= obj1.x
                 if(bSide==false&&tSide==false&&lSide==false&&rSide==false){
-                   console.log('touch')
+                   console.log('butcher wins')
+                }
+                if(grid[obj1.x][obj1.y]=='finishLine'){
+                    console.log('pig wins')
                 }
     }
     
