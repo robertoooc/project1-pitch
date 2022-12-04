@@ -2,8 +2,20 @@ let pressedKeys ={}
 const canvas = document.getElementById('canvas')
 let endGame = false
 let endButton = document.getElementById('end')
+let startButton = document.getElementById('start')
+startButton.style.display ='none'
 endButton.addEventListener('click',function(){
-    endGame = true    
+    endGame = true
+    startButton.style.display = "inline-block"    
+})
+startButton.addEventListener('click',function(){
+    endGame = false
+    startButton.style.display ='none'
+    piglet.x = 5
+    piglet.y = 10
+    butcher.x = 5
+    butcher.y = 70
+    animate()
 })
 
 let p = document.querySelector('p')
@@ -78,11 +90,9 @@ const speed = 10;
 const downAccelerate = 1
 class Players{
     constructor(x,y,color){
-        //this.name
+        this.wins = 0
         this.x = x
         this.y = y
-        //this.count=0
-        //this.falling = false
         this.jump = {
             up: 0,
             gravity: 0
@@ -208,6 +218,10 @@ class Players{
             if(endGame==false){
                 requestAnimationFrame(animate)
             }
+            else if(endGame == true){
+                endButton.style.display = "none"
+                startButton.style.display = "inline-block"
+            }
         }
             function obstacleBump(obj1,obj2,finishLine){
                 let tSide = obj1.y + obj1.height <= obj2.y
@@ -215,10 +229,13 @@ class Players{
                 let rSide = obj1.x + obj1.width <= obj2.x 
                 let lSide = obj2.x + obj2.width <= obj1.x
                 if(bSide==false&&tSide==false&&lSide==false&&rSide==false){
+                    butcher.wins++
                    console.log('butcher wins')
                    endGame = true
+                   console.log(butcher.wins, piglet.wins)
                 }
                 if(grid[obj1.x][obj1.y]=='finishLine'){
+                    piglet.wins++
                     console.log('pig wins')
                     endGame = true
                 }
