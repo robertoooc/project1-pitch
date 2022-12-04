@@ -1,24 +1,55 @@
 let pressedKeys ={}
 const canvas = document.getElementById('canvas')
-let endGame = false
+let scoreBoard = document.getElementById('scoreboard')
+let menuContainer = document.getElementById('menuPage')
+let bottomButtons = document.getElementById('bottomButton')
+let backToMenu=document.getElementById('backToMenu')
+let menuStart=document.getElementById('menuStart')
+let instructions=document.getElementById('instructions')
+let score=document.getElementById('score')
 let endButton = document.getElementById('end')
 let startButton = document.getElementById('start')
+let endGame = false
+backToMenu.style.display ='none'
+backToMenu.addEventListener('click',function(){
+    scoreBoard.style.display= 'none'
+    canvas.style.display = 'none'
+    menuContainer.style.display = 'inline-block'
+    backToMenu.style.display = "none"
+    endButton.style.display = "none"
+    startButton.style.display = 'none'
+})
+menuStart.addEventListener('click',function(){
+    canvas.style.display = 'inline-block'
+    menuContainer.style.display = 'none'
+    startGame()
+})
+instructions.addEventListener('click',function(){
+    console.log('messdage')
+})
+score.addEventListener('click',function(){
+    scoreBoard.innerText = `piglet wins: ${piglet.wins} \n butcher wins: ${butcher.wins}`
+    scoreBoard.style.display = 'block'
+})
 startButton.style.display ='none'
+endButton.style.display ='none'
 endButton.addEventListener('click',function(){
     endGame = true
+    backToMenu.style.display = "inline-block"    
     startButton.style.display = "inline-block"    
 })
-startButton.addEventListener('click',function(){
+startButton.addEventListener('click',startGame)
+function startGame(){
     endGame = false
     startButton.style.display ='none'
+    endButton.style.display = "inline-block"
     piglet.x = 5
     piglet.y = 10
     butcher.x = 5
     butcher.y = 70
-    animate()
-})
-
-let p = document.querySelector('p')
+    animate()  
+}
+//let p = document.querySelector('p')
 let cWidth = parseInt(window.getComputedStyle(canvas)['width'])
 let cHeight = parseInt(window.getComputedStyle(canvas)['height'])
 let checkheight = false
@@ -107,7 +138,7 @@ class Players{
             ctx.fillRect(this.x,this.y,this.width,this.height)         
             }           
         gravityUpdate(){            
-            p.innerText = `${cHeight}, ${this.y+this.height}`
+            //p.innerText = `${cHeight}, ${this.y+this.height}`
             this.y+=this.jump.gravity
             if(grid[this.x][this.y]!='taken'){
                 this.y-=this.jump.up
@@ -127,7 +158,7 @@ class Players{
         
         let butcher = new Players(5,70,'red')
         let piglet = new Players(5,10,'pink')
-        animate()
+        //animate()
         
         
         
@@ -230,13 +261,13 @@ class Players{
                 let lSide = obj2.x + obj2.width <= obj1.x
                 if(bSide==false&&tSide==false&&lSide==false&&rSide==false){
                     butcher.wins++
-                   console.log('butcher wins')
+                   //console.log('butcher wins')
                    endGame = true
-                   console.log(butcher.wins, piglet.wins)
+                   //console.log(butcher.wins, piglet.wins)
                 }
                 if(grid[obj1.x][obj1.y]=='finishLine'){
                     piglet.wins++
-                    console.log('pig wins')
+                    //console.log('pig wins')
                     endGame = true
                 }
     }
