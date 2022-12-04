@@ -6,7 +6,7 @@ let p = document.querySelector('p')
 let cWidth = parseInt(window.getComputedStyle(canvas)['width'])
 let cHeight = parseInt(window.getComputedStyle(canvas)['height'])
 let access1, access2
-
+let fall = true
 let checkheight = false
 let checkwidth = false
 let check =false
@@ -38,19 +38,27 @@ class Objects{
         this.color = color
     }
     create(){
+        for(let i = this.x; i <=this.x+this.width; i++){
+            for(let j = this.y; j<=this.y+this.height; j++){
+                grid[i][j]='taken'
+                //console.log(grid[i][j])
+            }
+        }
         ctx.fillStyle=this.color
         ctx.fillRect(this.x,this.y,this.width,this.height)
     } 
 }
 
-let leftWall = new Objects(0,0,5,canvas.height,"orange")
-let topWall = new Objects(0,0,canvas.width,5,"orange")
-let rightWall = new Objects(canvas.width -5,0,5,canvas.height,"orange")
-let bottomWall = new Objects(0,canvas.height-5,canvas.width,5,"orange")
+//let leftWall = new Objects(0,0,5,canvas.height,"orange")
+//let topWall = new Objects(0,0,canvas.width,5,"orange")
+//let rightWall = new Objects(canvas.width -5,0,5,canvas.height,"orange")
+//let bottomWall = new Objects(0,canvas.height-5,canvas.width,5,"orange")
 
-let block = new Objects(100,cHeight-70,cWidth-100,20,"orange")
-
-
+let block = new Objects(10,cHeight-70,cWidth-100,20,"orange")
+let block2 = new Objects(10,90,300,10,"black")
+let block3 = new Objects(250,140,200,10,"black")
+let block4 = new Objects(10,190,400,10,"black")
+let block5 = new Objects(400,290,100,10,"black")
 
 // let obstacle = new Objects(300,54,50,50,"black")
 // obstacle.create()
@@ -58,15 +66,17 @@ let block = new Objects(100,cHeight-70,cWidth-100,20,"orange")
 let access 
 const speed = 10;
 //const jump = 200
-const downAccelerate = .5
+const downAccelerate = 1
 
 //made a class that will help out with player movement
 class Players{
+    //static gravityCount = 0
     constructor(x,y,color){
         this.name
         this.x = x
         this.y = y
-        //this.access
+        this.count=0
+        this.falling = false
         this.jump = {
             up: 0,
             gravity: 0
@@ -81,13 +91,59 @@ class Players{
             //obstacleBump(this.x,this.y,this.width,this.height,block.x,block.y,block.width,block.height)
             ctx.fillStyle=this.color
                 ctx.fillRect(this.x,this.y,this.width,this.height)         
-        }
-        gravityUpdate(){
+            }
+            check(){        
+                if(typeof(grid[this.x][this.y+this.height])=='string'){
+                    console.log('no go')
+                }
+            }            
+        gravityUpdate(){            
             p.innerText = `${cHeight}, ${this.y+this.height}`
-            this.create()
+            // if(typeof(grid[this.x][this.y+this.height+this.jump.gravity])=='string'){
+                //     //this.y
+                // }
+                // else{
+                    //     fall = false
+            // }
             this.y+=this.jump.gravity
             this.y-=this.jump.up
-            
+            if((this.y + this.height + this.jump.gravity < cHeight)){
+                this.jump.gravity+=downAccelerate
+                this.count++             
+                //console.log(this.count,this.y+this.height, block2.y, block3.y)
+            }
+            else{
+                this.jump.gravity = 0
+                this.jump.up = 0
+                this.count =0
+            }
+            this.create()
+            //if(fall ==true){
+                //console.log(grid[this.x][this.y+this.jump.gravity+this.jump.gravity], this.y+this.jump.gravity, block2.y,block.y, this.jump.gravity)
+                //console.log(grid[this.x+this.width][this.y+this.height])
+                //this.check()                        
+                // if((typeof(grid[this.x][this.y])=='string')||(typeof(grid[this.x+this.width][this.y+this.jump.up])=='string')){
+                //     console.log(grid[this.x][this.y])                      
+                //     if((typeof(grid[this.x][(this.y)])!='string')){
+                //         console.log(this.y+this.height,this.color, block.y)
+                //        this.jump.gravity=0
+                //        this.jump.up = 0
+                //     }
+                // }  
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
             // if((this.y + this.height + this.jump.gravity < cHeight)&&((this.y+this.height+this.jump.gravity < block.y)&&access1 != false)){
                 
             //     this.jump.gravity+=downAccelerate             
@@ -99,21 +155,12 @@ class Players{
                     
                     //     this.jump.gravity+=downAccelerate             
                     // }
-                    if((this.y + this.height + this.jump.gravity < cHeight)){
-                        
-                        this.jump.gravity+=downAccelerate             
-                    }
-            else{
-                //console.log('end')
-                this.jump.gravity = 0
-                this.jump.up = 0
-            }        
-        }            
+        }
         }
         
         let butcher = new Players(5,10,'red')
         //butcher.create()
-        let piglet = new Players(cWidth,cHeight-30,'pink')
+        let piglet = new Players(60,10,'pink')
         //console.log(cWidth)
         //piglet.create()
         animate()
@@ -123,65 +170,119 @@ class Players{
         
         function movement(){
             
-            if(pressedKeys.ArrowUp&&butcher.jump.gravity==0 && access==true ){
-                butcher.jump.up +=speed
-                //console.log(butcher.x,butcher.y)
-            }else{
-                //consoe
-            }  
-            if(pressedKeys.ArrowLeft && access==true ){
-                //butcher.shiftLeft()
-                butcher.x -= speed
-                //console.log(butcher.x,butcher.y)
-            }else if(pressedKeys.ArrowLeft && access!=true ){
-                butcher.x += speed
-            }
-            if(pressedKeys.ArrowRight && access==true ){
-                butcher.x +=speed
-                //console.log(butcher.x,butcher.y)
-            }else if(pressedKeys.ArrowRight && access!=true ){
-                butcher.x -=speed
-            }
-            if( pressedKeys.a && access==true ){
-                piglet.x -= speed
-                //console.log(piglet.x,piglet.y)  
-                //piglet.shiftLeft()
-            }else if( pressedKeys.a && access!=true ){
-                piglet.x += speed
-            }
-            if(pressedKeys.w&&piglet.jump.gravity==0 && access==true ){
-                piglet.jump.up += speed
-                //wconsole.log(piglet.x,piglet.y)                  
-            }else if(pressedKeys.w&&piglet.jump.gravity==0 && access!=true ){
-                //piglet.jump.up += speed
-            }
-            if(pressedKeys.d && access==true ){
-                piglet.x+=speed
-                //console.log(piglet.x,piglet.y)                                
-            }else if(pressedKeys.d && access!=true ){
-                piglet.x-=speed
-            }
+            // if(pressedKeys.ArrowUp&&butcher.jump.gravity==0 && access==true ){
+            //     butcher.jump.up +=speed
+            //     //console.log(butcher.x,butcher.y)
+            // }else{
+            //     //consoe
+            // }  
+            // if(pressedKeys.ArrowLeft && access==true ){
+            //     //butcher.shiftLeft()
+            //     butcher.x -= speed
+            //     //console.log(butcher.x,butcher.y)
+            // }else if(pressedKeys.ArrowLeft && access!=true ){
+            //     butcher.x += speed
+            // }
+            // if(pressedKeys.ArrowRight && access==true ){
+            //     butcher.x +=speed
+            //     //console.log(butcher.x,butcher.y)
+            // }else if(pressedKeys.ArrowRight && access!=true ){
+            //     butcher.x -=speed
+            // }
+            // if( pressedKeys.a && access==true ){
+            //     piglet.x -= speed
+            //     //console.log(piglet.x,piglet.y)  
+            //     //piglet.shiftLeft()
+            // }else if( pressedKeys.a && access!=true ){
+            //     piglet.x += speed
+            // }
+            // if(pressedKeys.w&&piglet.jump.gravity==0 && access==true ){
+            //     piglet.jump.up += speed
+            //     //wconsole.log(piglet.x,piglet.y)                  
+            // }else if(pressedKeys.w&&piglet.jump.gravity==0 && access!=true ){
+            //     //piglet.jump.up += speed
+            // }
+            // if(pressedKeys.d && access==true ){
+            //     piglet.x+=speed
+            //     //console.log(piglet.x,piglet.y)                                
+            // }else if(pressedKeys.d && access!=true ){
+            //     piglet.x-=speed
+            // }
             
+            
+            
+            
+
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            const jumpVar = 15;
+    
+            if(pressedKeys.ArrowUp&&butcher.jump.gravity==0 ){
+                if((typeof(grid[butcher.x][butcher.y])!='string')&&typeof(grid[butcher.x][butcher.y+butcher.height-speed])!='string'){
+                    butcher.jump.up +=jumpVar
+                }
+            }             
+            if(pressedKeys.ArrowLeft){
+                if((typeof(grid[(butcher.x)-speed][butcher.y])!='string')&&(typeof(grid[(butcher.x)-speed][butcher.y+butcher.height])!='string')){
+                    butcher.x -= speed
+                }
+            }
+            if(pressedKeys.ArrowRight){
+                if((typeof(grid[(butcher.x+butcher.width)+speed][butcher.y])!='string')&&(typeof(grid[(butcher.x+butcher.width)+speed][butcher.y+butcher.height])!='string')){
+                    butcher.x +=speed
+                }
+            }
+            if( pressedKeys.a){
+                if((typeof(grid[(piglet.x)-speed][piglet.y])!='string')&&(typeof(grid[(piglet.x)-speed][piglet.y+piglet.height])!='string')){
+                    piglet.x -= speed
+                }
+            }
+            if(pressedKeys.w&&piglet.jump.gravity==0){
+                if((typeof(grid[piglet.x][piglet.y+speed])!='string')&&(typeof(grid[piglet.x][piglet.y+piglet.height-speed])!='string')){
+                    piglet.jump.up += jumpVar                
+                }
+            }
+            if(pressedKeys.d){
+                if((typeof(grid[(piglet.x+piglet.width)+speed][piglet.y])!='string')&&(typeof(grid[(piglet.x+piglet.width)+speed][piglet.y+piglet.height])!='string')){
+                    piglet.x += speed
+                }                        
+            }
             //access = true
         }
         function defaultSetting(){
             ctx.fillStyle = "aquamarine"
             ctx.fillRect(0,0,cWidth,cHeight)
             block.create()
+            block2.create()
+            block3.create()
+            block4.create()
+            block5.create()
         }
         
         document.addEventListener('keydown', function(e){
             pressedKeys[e.key] = true
             //animate()
             movement()
-            piglet.create()       
+            //piglet.create()       
             
         })
         document.addEventListener('keyup', function(e){
             pressedKeys[e.key] = false
             //animate()
             movement()
-            piglet.create()
+            //piglet.create()
             
         }) 
         
@@ -190,7 +291,16 @@ class Players{
             //movement()
             butcher.gravityUpdate()
             piglet.gravityUpdate()
-            obstacleBump(piglet,block)
+            if(grid[piglet.x][piglet.y+piglet.height]=='taken'||grid[piglet.x][piglet.y+piglet.height+piglet.jump.gravity]=='taken'){
+                piglet.jump.gravity =0
+                piglet.jump.up =0
+            }
+
+
+
+
+
+            //obstacleBump(piglet,block)
             
             requestAnimationFrame(animate)
         }
