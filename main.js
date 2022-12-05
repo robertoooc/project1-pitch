@@ -16,6 +16,7 @@ message.style.display = 'none'
 let endGame = false
 backToMenu.style.display ='none'
 backToMenu.addEventListener('click',function(){
+    message.style.display = 'none'
     scoreBoard.style.display= 'none'
     canvas.style.display = 'none'
     menuContainer.style.display = 'inline-block'
@@ -30,6 +31,7 @@ menuStart.addEventListener('click',function(){
     startGame()
 })
 instructions.addEventListener('click',function(){
+    scoreBoard.style.display ="none"
     instructionsMessage.style.display ="block"
     //scoreBoard.innerText = 'Welcome to Piglet Run, to begin a new Game press the Start playing Button\n This is a multiplayer game, a predator/(the butcher) and prey/(piglet) situation\n the keys to control the butcher are W/(jump) A/(shift left) D/(shift right)\n The keys to control piglet are  \n To check the scoreBoard press the Score Board button \n '
 })
@@ -52,23 +54,28 @@ function startGame(){
     endGame = false
     startButton.style.display ='none'
     endButton.style.display = "inline-block"
-    piglet.x = 5
-    piglet.y = 10
-    butcher.x = 5
-    butcher.y = 70
+     piglet.x = 50
+     piglet.y = 10
+     butcher.x = 500
+     butcher.y = 10
     animate()  
 }
 //let p = document.querySelector('p')
+const ctx = canvas.getContext('2d')
+
+
+
 let cWidth = parseInt(window.getComputedStyle(canvas)['width'])
 let cHeight = parseInt(window.getComputedStyle(canvas)['height'])
 let checkheight = false
 let checkwidth = false
 let check =false
 while(check==false){
- cWidth % 10!==0 ? cWidth++ : checkwidth = true
- cHeight % 10!==0 ? cHeight++ : checkheight = true
- checkwidth&&checkheight ? check=true : check =false
+    cWidth % 10!==0 ? cWidth++ : checkwidth = true
+    cHeight % 10!==0 ? cHeight++ : checkheight = true
+    checkwidth&&checkheight ? check=true : check =false
 }
+console.log(cWidth, cHeight)
 canvas.setAttribute('height',cHeight.toString())
 canvas.setAttribute('width',cWidth.toString())
 let grid = []
@@ -78,7 +85,6 @@ for(let i = 0; i <=cWidth; i++){
         grid[i][j] = 1
     }
 }
-const ctx = canvas.getContext('2d')
 
 
 class Objects{
@@ -109,9 +115,31 @@ class Objects{
     } 
 }
 
-let block = new Objects(0,cHeight-20,cWidth,20,"orange")
-let block2 = new Objects(0,50,440,20,"black")
-let block3 = new Objects(0,130,440,20,"black")
+// let block = new Objects(0,cHeight-20,cWidth,20,"orange")
+// let block2 = new Objects(0,40,440,20,"black")
+// let block3 = new Objects(0,120,440,20,"black")
+// let block4 = new Objects(70,240,cWidth-70,20,"black")
+// let block5 = new Objects(0,390,cWidth-70,20,"black")
+// let block6 = new Objects(0,490,100,20,"black")
+// let block7 = new Objects(190,490,160,20,"black")
+// let block8 = new Objects(440,490,cWidth-440,20,"black")
+// let block9 = new Objects(0,590,70,20,"black")
+// let block10 = new Objects(130,590,370,20,"black")
+// let block11 = new Objects(cWidth-70,590,70,20,"black")
+// let obstacle1 =new Objects(156,210,30,30,"black")
+// let obstacle2=new Objects(400,210,30,30,"black")
+// let obstacle3=new Objects(490,460,30,30,"black")
+// let obstacle4=new Objects(440,cHeight-50,30,30,"black")
+//let block = new Objects(0,cHeight-20,cWidth,20,"orange")
+
+//let block2 = new Objects(0,10,440,20,"black")
+let ss = Math.round(cWidth/3)
+console.log(ss)
+let block3 = new Objects(0,100,cWidth/3,20,"black") //90 
+let block = new Objects(cWidth-(cWidth/3),100,cWidth/3,20,"black") //90 
+let obstacle1 =new Objects(140,80,20,20,"black")
+let obstacle2=new Objects(400,220,20,20,"black")
+
 let block4 = new Objects(70,240,cWidth-70,20,"black")
 let block5 = new Objects(0,390,cWidth-70,20,"black")
 let block6 = new Objects(0,490,100,20,"black")
@@ -120,14 +148,13 @@ let block8 = new Objects(440,490,cWidth-440,20,"black")
 let block9 = new Objects(0,590,70,20,"black")
 let block10 = new Objects(130,590,370,20,"black")
 let block11 = new Objects(cWidth-70,590,70,20,"black")
-let obstacle1 =new Objects(156,210,30,30,"black")
-let obstacle2=new Objects(400,210,30,30,"black")
-let obstacle3=new Objects(490,460,30,30,"black")
-let obstacle4=new Objects(440,cHeight-50,30,30,"black")
+let obstacle3=new Objects(490,460,20,20,"black")
+let obstacle4=new Objects(440,cHeight-50,20,20,"black")
 let finishLine = new Objects(0,cHeight-70,50,50,"blue" )
 
 const speed = 10;
 const downAccelerate = 1
+
 class Players{
     static numGames = 0
     constructor(x,y,color){
@@ -144,36 +171,35 @@ class Players{
         
     }
     create(){
-            ctx.fillStyle=this.color
-            ctx.fillRect(this.x,this.y,this.width,this.height)         
-            }           
-        gravityUpdate(){            
-            //p.innerText = `${cHeight}, ${this.y+this.height}`
-            this.y+=this.jump.gravity
-            if(grid[this.x][this.y]!='taken'){
-                this.y-=this.jump.up
-            }
-            if((this.y + this.height + this.jump.gravity < cHeight)){
-                this.jump.gravity+=downAccelerate
-                this.count++             
-            }
-            else{
-                this.jump.gravity = 0
-                this.jump.up = 0
-                this.count =0
-            }
-            this.create()
+        ctx.fillStyle=this.color
+        ctx.fillRect(this.x,this.y,this.width,this.height)         
+    }           
+    gravityUpdate(){            
+        //p.innerText = `${cHeight}, ${this.y+this.height}`
+        this.y+=this.jump.gravity
+        if(grid[this.x][this.y]!='taken'){
+            this.y-=this.jump.up
         }
+        if((this.y + this.height + this.jump.gravity < cHeight)){
+            this.jump.gravity+=downAccelerate
+            this.count++             
         }
-        
-        let butcher = new Players(5,70,'red')
-        let piglet = new Players(5,10,'pink')
-          
-        function movement(){
-            const jumpVar = 15;
-            if(pressedKeys.ArrowUp&&butcher.jump.gravity==0 ){
-                if((typeof(grid[butcher.x][butcher.y])!='string')&&typeof(grid[butcher.x][butcher.y+butcher.height])!='string'){
-                    butcher.jump.up +=jumpVar
+        else{
+            this.jump.gravity = 0
+            this.jump.up = 0
+            this.count =0
+        }
+        this.create()
+    }
+}
+let butcher = new Players(50,70,'red')
+let piglet = new Players(5,10,'pink')
+
+function movement(){
+    const jumpVar = 10;
+    if(pressedKeys.ArrowUp&&butcher.jump.gravity==0 ){
+        if((typeof(grid[butcher.x][butcher.y])!='string')&&typeof(grid[butcher.x][butcher.y+butcher.height])!='string'){
+            butcher.jump.up +=jumpVar
                 }
             }             
             if(pressedKeys.ArrowLeft){
@@ -206,7 +232,7 @@ class Players{
             ctx.fillStyle = "aquamarine"
             ctx.fillRect(0,0,cWidth,cHeight)
             block.create()
-            block2.create()
+            //block2.create()
             block3.create()
             block4.create()
             block5.create()
@@ -253,6 +279,7 @@ class Players{
             }
             else if(endGame == true){
                 endButton.style.display = "none"
+                backToMenu.style.display ='inline-block'
                 startButton.style.display = "inline-block"
             }
         }
