@@ -6,9 +6,13 @@ let bottomButtons = document.getElementById('bottomButton')
 let backToMenu=document.getElementById('backToMenu')
 let menuStart=document.getElementById('menuStart')
 let instructions=document.getElementById('instructions')
+let instructionsMessage=document.getElementById('instructionsm')
 let score=document.getElementById('score')
 let endButton = document.getElementById('end')
 let startButton = document.getElementById('start')
+let message = document.getElementById('message')
+instructionsMessage.style.display ="none"
+message.style.display = 'none'
 let endGame = false
 backToMenu.style.display ='none'
 backToMenu.addEventListener('click',function(){
@@ -20,15 +24,18 @@ backToMenu.addEventListener('click',function(){
     startButton.style.display = 'none'
 })
 menuStart.addEventListener('click',function(){
+    instructionsMessage.style.display ="none"
     canvas.style.display = 'inline-block'
     menuContainer.style.display = 'none'
     startGame()
 })
 instructions.addEventListener('click',function(){
-    console.log('messdage')
+    instructionsMessage.style.display ="block"
+    //scoreBoard.innerText = 'Welcome to Piglet Run, to begin a new Game press the Start playing Button\n This is a multiplayer game, a predator/(the butcher) and prey/(piglet) situation\n the keys to control the butcher are W/(jump) A/(shift left) D/(shift right)\n The keys to control piglet are  \n To check the scoreBoard press the Score Board button \n '
 })
 score.addEventListener('click',function(){
-    scoreBoard.innerText = `piglet wins: ${piglet.wins} \n butcher wins: ${butcher.wins}`
+    instructionsMessage.style.display ="none"
+    scoreBoard.innerText = `piglet wins: ${piglet.wins} \n butcher wins: ${butcher.wins} \n number of games: ${Players.numGames}`
     scoreBoard.style.display = 'block'
 })
 startButton.style.display ='none'
@@ -40,6 +47,8 @@ endButton.addEventListener('click',function(){
 })
 startButton.addEventListener('click',startGame)
 function startGame(){
+    message.style.display = 'none'
+    Players.numGames++
     endGame = false
     startButton.style.display ='none'
     endButton.style.display = "inline-block"
@@ -92,7 +101,7 @@ class Objects{
     end(){
         for(let i = this.x; i <=this.x+this.width; i++){
             for(let j = this.y; j<=this.y+this.height; j++){
-                grid[i][j]='finishLine'
+                grid[i][j]= 0
             }
         }
         ctx.fillStyle=this.color
@@ -111,15 +120,16 @@ let block8 = new Objects(440,490,cWidth-440,20,"black")
 let block9 = new Objects(0,590,70,20,"black")
 let block10 = new Objects(130,590,370,20,"black")
 let block11 = new Objects(cWidth-70,590,70,20,"black")
-let obstacle1 =new Objects(156,220,20,20,"black")
-let obstacle2=new Objects(400,220,20,20,"black")
-let obstacle3=new Objects(490,470,20,20,"black")
-let obstacle4=new Objects(440,cHeight-40,20,20,"black")
+let obstacle1 =new Objects(156,210,30,30,"black")
+let obstacle2=new Objects(400,210,30,30,"black")
+let obstacle3=new Objects(490,460,30,30,"black")
+let obstacle4=new Objects(440,cHeight-50,30,30,"black")
 let finishLine = new Objects(0,cHeight-70,50,50,"blue" )
 
 const speed = 10;
 const downAccelerate = 1
 class Players{
+    static numGames = 0
     constructor(x,y,color){
         this.wins = 0
         this.x = x
@@ -158,11 +168,7 @@ class Players{
         
         let butcher = new Players(5,70,'red')
         let piglet = new Players(5,10,'pink')
-        //animate()
-        
-        
-        
-        
+          
         function movement(){
             const jumpVar = 15;
             if(pressedKeys.ArrowUp&&butcher.jump.gravity==0 ){
@@ -186,7 +192,7 @@ class Players{
                 }
             }
             if(pressedKeys.w&&piglet.jump.gravity==0){
-                if((typeof(grid[piglet.x][piglet.y+speed])!='string')&&(typeof(grid[piglet.x][piglet.y+piglet.height-speed])!='string')){
+                if((typeof(grid[piglet.x][piglet.y+piglet.jump.up+jumpVar])!='string')&&(typeof(grid[piglet.x][piglet.y+piglet.height-speed])!='string')){
                     piglet.jump.up += jumpVar                
                 }
             }
@@ -215,7 +221,6 @@ class Players{
             obstacle3.create()
             obstacle4.create()
             finishLine.end()
-
         }       
         document.addEventListener('keydown', function(e){
             pressedKeys[e.key] = true
@@ -229,21 +234,18 @@ class Players{
                 movement()         
             }            
         }) 
-        
+        //animate()
         function animate(){
             defaultSetting()
-
             butcher.gravityUpdate()
             piglet.gravityUpdate()
-            if((piglet.jump.gravity != 0 &&grid[piglet.x][piglet.y+piglet.height]=='taken'||grid[piglet.x][piglet.y+piglet.height+piglet.jump.gravity]=='taken')&&(piglet.jump.gravity != 0 &&grid[piglet.x+piglet.width][piglet.y+piglet.height]=='taken'||grid[piglet.x][piglet.y+piglet.height+piglet.jump.gravity]=='taken')){
+            if(piglet.jump.gravity != 0 &&grid[piglet.x+piglet.width][piglet.y+piglet.height]=='taken'||grid[piglet.x][piglet.y+piglet.height+piglet.jump.gravity]=='taken'){
                 piglet.jump.gravity =0
                 piglet.jump.up =0
-                //console.log('pig')
             }
             if(butcher.jump.gravity != 0 &&grid[butcher.x+butcher.width][butcher.y+butcher.height]=='taken'||grid[butcher.x][butcher.y+butcher.height+butcher.jump.gravity]=='taken'){
                 butcher.jump.gravity =0
                 butcher.jump.up =0
-                //console.log('butcher')
             }
             obstacleBump(piglet,butcher,finishLine)
             if(endGame==false){
@@ -261,13 +263,14 @@ class Players{
                 let lSide = obj2.x + obj2.width <= obj1.x
                 if(bSide==false&&tSide==false&&lSide==false&&rSide==false){
                     butcher.wins++
-                   //console.log('butcher wins')
                    endGame = true
-                   //console.log(butcher.wins, piglet.wins)
+                   message.style.display = "inline"
+                   message.innerText = `The butcher is the Winner!!`
                 }
-                if(grid[obj1.x][obj1.y]=='finishLine'){
+                if(grid[obj1.x][obj1.y]==0){
                     piglet.wins++
-                    //console.log('pig wins')
+                    message.style.display = "inline" 
+                    message.innerText = `Piglet is the Winner!!`
                     endGame = true
                 }
     }
