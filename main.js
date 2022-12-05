@@ -137,28 +137,25 @@ let userHeight = Math.round(cWidth/25)
 let blockHeight = Math.round(cWidth/37)
 let topWidth = Math.round(cWidth/3)
 let topRowHeight = Math.round(cHeight/8)
-console.log(cWidth/37)
 let block3 = new Objects(0,topRowHeight,topWidth,blockHeight,"black") //90 
 let block = new Objects(cWidth-(topWidth),topRowHeight,topWidth,blockHeight,"black") //90 
-//let obstacle1 =new Objects(200,topRowHeight-blockHeight,blockHeight,blockHeight,"black")
-//let obstacle2=new Objects(400,topRowHeight-blockHeight,blockHeight,blockHeight,"black")
-
 let block4 = new Objects(Math.round((cWidth/5)*2),topRowHeight*2+blockHeight,Math.round(cWidth/5),blockHeight,"yellow")
 let block5 = new Objects(topWidth,(topRowHeight*2)+(blockHeight)*2,topWidth,blockHeight,"blue")
 let block6 = new Objects((Math.round(topWidth*3/4)),(topRowHeight*2)+(blockHeight*3),Math.round(cWidth/2),blockHeight,"black")
-console.log(topWidth * 3/2)
- let block7 = new Objects((Math.round(topWidth*2/4)),Math.round(cHeight/2),Math.round(cWidth*2/3),blockHeight,"pink")
+let block7 = new Objects((Math.round(topWidth*2/4)),Math.round(cHeight/2),Math.round(cWidth*2/3),blockHeight,"pink")
+let block10 = new Objects(Math.round(cWidth*3/5),Math.round(cHeight* 7/10)+blockHeight,Math.round((cWidth/5)*2),blockHeight,"orange")
+let block11 = new Objects(0,Math.round(cHeight* 7/10)+blockHeight,Math.round((cWidth/5)*2),blockHeight,"green")
+let block9 = new Objects(cWidth-Math.round(topWidth*3/4),Math.round(cHeight* 7/10),Math.round(topWidth*3/4),blockHeight,"hotpink")
+let block8 = new Objects(0,Math.round(cHeight* 7/10),Math.round(topWidth*3/4),blockHeight,"black")
+let obstacle3=new Objects(Math.round(topWidth*2/5),Math.round(cHeight* 7/10)-blockHeight,blockHeight,blockHeight,"black")
+let obstacle4=new Objects(cWidth-Math.round(topWidth*2/5),Math.round(cHeight* 7/10)-blockHeight,blockHeight,blockHeight,"black")
 
- let block8 = new Objects(0,Math.round(cHeight* 7/10),topWidth,blockHeight,"black")
- let block9 = new Objects(cWidth-(topWidth),Math.round(cHeight* 7/10),topWidth,blockHeight,"orange")
- let block10 = new Objects(Math.round(cWidth*3/5),Math.round(cHeight* 7/10)+blockHeight,Math.round((cWidth/5)*2),blockHeight,"orange")
- let block11 = new Objects(0,Math.round(cHeight* 7/10)+blockHeight,Math.round((cWidth/5)*2),blockHeight,"black")
-// let obstacle3=new Objects(490,460,20,20,"black")
-// let obstacle4=new Objects(440,cHeight-50,20,20,"black")
- let finishLine = new Objects(0,cHeight-70,50,50,"blue" )
-
-const speed = Math.round(cWidth/48)
-const downAccelerate = 1
+ let finishLine = new Objects(0,cHeight-50,blockHeight*2,blockHeight*2,"blue" )
+ let obstacle1 =new Objects(Math.round(topWidth*3/5),topRowHeight-blockHeight,blockHeight,blockHeight,"black")
+ let obstacle2=new Objects(cWidth-Math.round(topWidth*3/5),topRowHeight-blockHeight,blockHeight,blockHeight,"black")
+ 
+ const speed = Math.round(cWidth/48)
+ const downAccelerate = 1
 
 class Players{
     static numGames = 0
@@ -201,19 +198,19 @@ let butcher = new Players(50,70,'red')
 let piglet = new Players(5,10,'pink')
 const jumpVar = Math.round(cHeight/62)
 function movement(){
-    if(pressedKeys.ArrowUp&&butcher.jump.gravity==0 ){
+        if(pressedKeys.ArrowUp&&butcher.jump.gravity==0 ){
         if((typeof(grid[butcher.x][butcher.y])!='string')&&typeof(grid[butcher.x][butcher.y+butcher.height])!='string'){
             butcher.jump.up +=jumpVar
-                }
-            }             
+        }
+        }             
+        if(pressedKeys.w&&piglet.jump.gravity==0){
+        if((typeof(grid[piglet.x][piglet.y+piglet.jump.up+jumpVar])!='string')&&(typeof(grid[piglet.x][piglet.y+piglet.height-speed])!='string')){
+            piglet.jump.up += jumpVar                
+        }
+        }
             if(pressedKeys.ArrowLeft){
                 if((typeof(grid[(butcher.x)-speed][butcher.y])!='string')&&(typeof(grid[(butcher.x)-speed][butcher.y+butcher.height])!='string')){
                     butcher.x -= speed
-                }
-            }
-            if(pressedKeys.ArrowRight){
-                if((typeof(grid[(butcher.x+butcher.width)+speed][butcher.y])!='string')&&(typeof(grid[(butcher.x+butcher.width)+speed][butcher.y+butcher.height])!='string')){
-                    butcher.x +=speed
                 }
             }
             if( pressedKeys.a){
@@ -221,9 +218,9 @@ function movement(){
                     piglet.x -= speed
                 }
             }
-            if(pressedKeys.w&&piglet.jump.gravity==0){
-                if((typeof(grid[piglet.x][piglet.y+piglet.jump.up+jumpVar])!='string')&&(typeof(grid[piglet.x][piglet.y+piglet.height-speed])!='string')){
-                    piglet.jump.up += jumpVar                
+            if(pressedKeys.ArrowRight){
+                if((typeof(grid[(butcher.x+butcher.width)+speed][butcher.y])!='string')&&(typeof(grid[(butcher.x+butcher.width)+speed][butcher.y+butcher.height])!='string')){
+                    butcher.x +=speed
                 }
             }
             if(pressedKeys.d){
@@ -246,10 +243,10 @@ function movement(){
             block9.create()
              block10.create()
              block11.create()
-            // obstacle1.create()
-            // obstacle2.create()
-            // obstacle3.create()
-            // obstacle4.create()
+             obstacle1.create()
+             obstacle2.create()
+             obstacle3.create()
+            obstacle4.create()
              finishLine.end()
         }       
         document.addEventListener('keydown', function(e){
