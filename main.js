@@ -63,7 +63,7 @@ while(check==false){
     cHeight % 10!==0 ? cHeight++ : checkheight = true
     checkwidth&&checkheight ? check=true : check =false
 }
-console.log(cWidth, cHeight)
+//console.log(cWidth, cHeight)
 canvas.setAttribute('height',cHeight.toString())
 canvas.setAttribute('width',cWidth.toString())
 let grid = []
@@ -148,24 +148,6 @@ class Objects{
 }
 
 
-// let block = new Objects(0,cHeight-20,cWidth,20,"orange")
-// let block2 = new Objects(0,40,440,20,"black")
-// let block3 = new Objects(0,120,440,20,"black")
-// let block4 = new Objects(70,240,cWidth-70,20,"black")
-// let block5 = new Objects(0,390,cWidth-70,20,"black")
-// let block6 = new Objects(0,490,100,20,"black")
-// let block7 = new Objects(190,490,160,20,"black")
-// let block8 = new Objects(440,490,cWidth-440,20,"black")
-// let block9 = new Objects(0,590,70,20,"black")
-// let block10 = new Objects(130,590,370,20,"black")
-// let block11 = new Objects(cWidth-70,590,70,20,"black")
-// let obstacle1 =new Objects(156,210,30,30,"black")
-// let obstacle2=new Objects(400,210,30,30,"black")
-// let obstacle3=new Objects(490,460,30,30,"black")
-// let obstacle4=new Objects(440,cHeight-50,30,30,"black")
-//let block = new Objects(0,cHeight-20,cWidth,20,"orange")
-
-//let block2 = new Objects(0,10,440,20,"black")
 let userHeight = Math.round(cWidth/25)
 let blockHeight = Math.round(cWidth/37)
 let playerSize = Math.round(blockHeight*9/8)
@@ -189,8 +171,8 @@ let obstacle4=new Objects(cWidth-Math.round(topWidth*2/5),Math.round(cHeight* 7/
  let finishLine = new Objects(0,cHeight-50,blockHeight*2,blockHeight*2,"blue" )
  let obstacle1 =new Objects(Math.round(topWidth*3/5),topRowHeight-blockHeight,blockHeight,blockHeight,"black")
  let obstacle2=new Objects(cWidth-Math.round(topWidth*3/5),topRowHeight-blockHeight,blockHeight,blockHeight,"black")
- let obstacle6 = new Objects(Math.round(cWidth*3/5)-(blockHeight*2),Math.round(cHeight/2),blockHeight,blockHeight,"red", 'left')
- let obstacle5 = new Objects((Math.round(topWidth*2/4))+Math.round(cWidth*1/4)+blockHeight,Math.round(cHeight/2),blockHeight,blockHeight,"purple",'right')
+ let obstacle6 = new Objects(Math.round(cWidth*3/5)-(blockHeight*2),Math.round(cHeight/2),blockHeight*2,blockHeight,"red", 'left')
+ let obstacle5 = new Objects((Math.round(topWidth*2/4))+Math.round(cWidth*1/4)+blockHeight,Math.round(cHeight/2),blockHeight*2,blockHeight,"purple",'right')
  const speed = Math.round(cWidth/48)
  console.log(playerSize)
  const downAccelerate = 1
