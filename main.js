@@ -146,8 +146,20 @@ class Objects{
         ctx.fillRect(this.x,this.y,this.width,this.height)
     } 
 }
-
-
+class Images {
+    constructor(x,y,width,height, imageSrc){
+        this.x = x
+        this.y = y
+        this.width = width
+        this.height= height
+        this.image = new Image()
+        this.image.src = imageSrc
+    }
+    create(){
+        ctx.drawImage(this.image, this.x, this.y, this.width, this.height)
+    }
+}
+let background = new Images(0,0,cWidth,cHeight, "https://www.gameart2d.com/uploads/3/0/9/1/30917885/7536921_orig.png")
 let userHeight = Math.round(cWidth/25)
 let blockHeight = Math.round(cWidth/37)
 let playerSize = Math.round(blockHeight*9/8)
@@ -250,8 +262,9 @@ function movement(){
             }
         }
         function defaultSetting(){
-            ctx.fillStyle = "aquamarine"
-            ctx.fillRect(0,0,cWidth,cHeight)
+            //ctx.fillStyle = "aquamarine"
+            //ctx.fillRect(0,0,cWidth,cHeight)
+            background.create()
             block.create()
             //block2.create()
             block3.create()
