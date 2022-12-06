@@ -88,13 +88,13 @@ function startGame(){
 
 
 class Objects{
-    constructor(x,y,width,height,color){
+    constructor(x,y,width,height,color,direction){
         this.x =x
         this.y = y
         this.width = width
         this.height = height
         this.color = color
-        this.direction
+        this.direction = direction
     }
     create(){
         for(let i = this.x; i <=this.x+this.width; i++){
@@ -106,12 +106,34 @@ class Objects{
         ctx.fillRect(this.x,this.y,this.width,this.height)
     }
     moving(){
-        this.x++
-        for(let i = this.x; i <=this.x+this.width; i++){
-            for(let j = this.y; j<=this.y+this.height; j++){
-                grid[i-1][j]=1
+        if(this.direction=='left'){     
+            this.x--
+            
+            if(grid[this.x-1][this.y]=='taken'){
+                this.direction ='right'
             }
+            for(let i = this.x; i <=this.x+this.width; i++){
+                for(let j = this.y; j<=this.y+this.height; j++){
+                    grid[i+1][j]=1
+                }  }
+
         }
+        if(this.direction=='right'){
+            if(typeof(grid[this.x+this.width+1][this.y])=='string'){
+                this.direction ='left'
+                console.log('stop')
+            }
+            for(let i = this.x; i <=this.x+this.width; i++){
+                for(let j = this.y; j<=this.y+this.height; j++){
+                    grid[i-1][j]=1
+                }
+            }
+            this.x++
+
+        }
+        console.log(this.direction)
+        
+        //this.x++
         this.create()
     }
     end(){
@@ -167,8 +189,8 @@ let obstacle4=new Objects(cWidth-Math.round(topWidth*2/5),Math.round(cHeight* 7/
  let finishLine = new Objects(0,cHeight-50,blockHeight*2,blockHeight*2,"blue" )
  let obstacle1 =new Objects(Math.round(topWidth*3/5),topRowHeight-blockHeight,blockHeight,blockHeight,"black")
  let obstacle2=new Objects(cWidth-Math.round(topWidth*3/5),topRowHeight-blockHeight,blockHeight,blockHeight,"black")
- let obstacle6 = new Objects(Math.round(cWidth*3/5)-blockHeight,Math.round(cHeight/2),blockHeight,blockHeight,"red")
- let obstacle5 = new Objects((Math.round(topWidth*2/4))+Math.round(cWidth*1/4),Math.round(cHeight/2),blockHeight,blockHeight,"purple")
+ let obstacle6 = new Objects(Math.round(cWidth*3/5)-(blockHeight*2),Math.round(cHeight/2),blockHeight,blockHeight,"red", 'left')
+ let obstacle5 = new Objects((Math.round(topWidth*2/4))+Math.round(cWidth*1/4)+blockHeight,Math.round(cHeight/2),blockHeight,blockHeight,"purple",'right')
  const speed = Math.round(cWidth/48)
  console.log(playerSize)
  const downAccelerate = 1
