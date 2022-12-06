@@ -48,18 +48,6 @@ endButton.addEventListener('click',function(){
     startButton.style.display = "inline-block"    
 })
 startButton.addEventListener('click',startGame)
-function startGame(){
-    message.style.display = 'none'
-    Players.numGames++
-    endGame = false
-    startButton.style.display ='none'
-    endButton.style.display = "inline-block"
-     piglet.x = 50
-     piglet.y = 10
-     butcher.x = 500
-     butcher.y = 10
-    animate()  
-}
 //let p = document.querySelector('p')
 const ctx = canvas.getContext('2d')
 
@@ -85,6 +73,18 @@ for(let i = 0; i <=cWidth; i++){
         grid[i][j] = 1
     }
 }
+function startGame(){
+    message.style.display = 'none'
+    Players.numGames++
+    endGame = false
+    startButton.style.display ='none'
+    endButton.style.display = "inline-block"
+     piglet.x = 0
+     piglet.y = 10
+     butcher.x = cWidth-playerSize
+     butcher.y = 10
+    animate()  
+}
 
 
 class Objects{
@@ -94,6 +94,7 @@ class Objects{
         this.width = width
         this.height = height
         this.color = color
+        this.direction
     }
     create(){
         for(let i = this.x; i <=this.x+this.width; i++){
@@ -103,6 +104,15 @@ class Objects{
         }
         ctx.fillStyle=this.color
         ctx.fillRect(this.x,this.y,this.width,this.height)
+    }
+    moving(){
+        this.x++
+        for(let i = this.x; i <=this.x+this.width; i++){
+            for(let j = this.y; j<=this.y+this.height; j++){
+                grid[i-1][j]=1
+            }
+        }
+        this.create()
     }
     end(){
         for(let i = this.x; i <=this.x+this.width; i++){
@@ -114,6 +124,7 @@ class Objects{
         ctx.fillRect(this.x,this.y,this.width,this.height)
     } 
 }
+
 
 // let block = new Objects(0,cHeight-20,cWidth,20,"orange")
 // let block2 = new Objects(0,40,440,20,"black")
@@ -135,6 +146,7 @@ class Objects{
 //let block2 = new Objects(0,10,440,20,"black")
 let userHeight = Math.round(cWidth/25)
 let blockHeight = Math.round(cWidth/37)
+let playerSize = Math.round(blockHeight*9/8)
 let topWidth = Math.round(cWidth/3)
 let topRowHeight = Math.round(cHeight/8)
 let block3 = new Objects(0,topRowHeight,topWidth,blockHeight,"black") //90 
@@ -142,7 +154,8 @@ let block = new Objects(cWidth-(topWidth),topRowHeight,topWidth,blockHeight,"bla
 let block4 = new Objects(Math.round((cWidth/5)*2),topRowHeight*2+blockHeight,Math.round(cWidth/5),blockHeight,"yellow")
 let block5 = new Objects(topWidth,(topRowHeight*2)+(blockHeight)*2,topWidth,blockHeight,"blue")
 let block6 = new Objects((Math.round(topWidth*3/4)),(topRowHeight*2)+(blockHeight*3),Math.round(cWidth/2),blockHeight,"black")
-let block7 = new Objects((Math.round(topWidth*2/4)),Math.round(cHeight/2),Math.round(cWidth*2/3),blockHeight,"pink")
+let block7 = new Objects((Math.round(topWidth*2/4)),Math.round(cHeight/2),Math.round(cWidth*1/4),blockHeight,"pink")
+let block12 = new Objects(Math.round(cWidth*3/5),Math.round(cHeight/2),Math.round(cWidth*1/4),blockHeight,"pink")
 let block10 = new Objects(Math.round(cWidth*3/5),Math.round(cHeight* 7/10)+blockHeight,Math.round((cWidth/5)*2),blockHeight,"orange")
 let block11 = new Objects(0,Math.round(cHeight* 7/10)+blockHeight,Math.round((cWidth/5)*2),blockHeight,"green")
 let block9 = new Objects(cWidth-Math.round(topWidth*3/4),Math.round(cHeight* 7/10),Math.round(topWidth*3/4),blockHeight,"hotpink")
@@ -150,11 +163,14 @@ let block8 = new Objects(0,Math.round(cHeight* 7/10),Math.round(topWidth*3/4),bl
 let obstacle3=new Objects(Math.round(topWidth*2/5),Math.round(cHeight* 7/10)-blockHeight,blockHeight,blockHeight,"black")
 let obstacle4=new Objects(cWidth-Math.round(topWidth*2/5),Math.round(cHeight* 7/10)-blockHeight,blockHeight,blockHeight,"black")
 
+ let finishLine2 = new Objects(cWidth-(blockHeight*2),cHeight-50,blockHeight*2,blockHeight*2,"blue" )
  let finishLine = new Objects(0,cHeight-50,blockHeight*2,blockHeight*2,"blue" )
  let obstacle1 =new Objects(Math.round(topWidth*3/5),topRowHeight-blockHeight,blockHeight,blockHeight,"black")
  let obstacle2=new Objects(cWidth-Math.round(topWidth*3/5),topRowHeight-blockHeight,blockHeight,blockHeight,"black")
- 
+ let obstacle6 = new Objects(Math.round(cWidth*3/5)-blockHeight,Math.round(cHeight/2),blockHeight,blockHeight,"red")
+ let obstacle5 = new Objects((Math.round(topWidth*2/4))+Math.round(cWidth*1/4),Math.round(cHeight/2),blockHeight,blockHeight,"purple")
  const speed = Math.round(cWidth/48)
+ console.log(playerSize)
  const downAccelerate = 1
 
 class Players{
@@ -167,8 +183,8 @@ class Players{
             up: 0,
             gravity: 0
         }
-        this.width = 30
-        this.height = 30       
+        this.width = blockHeight
+        this.height = blockHeight      
         this.color = color
         
     }
@@ -204,7 +220,7 @@ function movement(){
         }
         }             
         if(pressedKeys.w&&piglet.jump.gravity==0){
-        if((typeof(grid[piglet.x][piglet.y+piglet.jump.up+jumpVar])!='string')&&(typeof(grid[piglet.x][piglet.y+piglet.height-speed])!='string')){
+        if((typeof(grid[piglet.x][piglet.y])!='string')&&typeof(grid[piglet.x][piglet.y+piglet.height])!='string'){
             piglet.jump.up += jumpVar                
         }
         }
@@ -243,11 +259,15 @@ function movement(){
             block9.create()
              block10.create()
              block11.create()
+             block12.create()
              obstacle1.create()
              obstacle2.create()
              obstacle3.create()
             obstacle4.create()
+            obstacle5.moving()
+            obstacle6.moving()
              finishLine.end()
+             finishLine2.end()
         }       
         document.addEventListener('keydown', function(e){
             pressedKeys[e.key] = true
