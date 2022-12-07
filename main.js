@@ -15,6 +15,10 @@ instructionsMessage.style.display ="none"
 message.style.display = 'none'
 let endGame = false
 backToMenu.style.display ='none'
+const frogJump = new Image()
+ frogJump.src= "./sprites/frogJump(32x32).png"
+//console.log(frogJump)
+
 backToMenu.addEventListener('click',function(){
     message.style.display = 'none'
     scoreBoard.style.display= 'none'
@@ -83,6 +87,10 @@ function startGame(){
      piglet.y = 10
      butcher.x = cWidth-playerSize
      butcher.y = 10
+     piglet.direction = 'left'
+                    piglet.imageSrc = 'sprites/bunnyRunLeft(34x44).png'
+                    butcher.direction = 'right'
+                    butcher.imageSrc = 'sprites/frogRunRight(32x32) copy.png'
     animate()  
 }
 
@@ -121,7 +129,7 @@ class Objects{
         if(this.direction=='right'){
             if(typeof(grid[this.x+this.width+1][this.y])=='string'){
                 this.direction ='left'
-                console.log('stop')
+                ///console.log('stop')
             }
             for(let i = this.x; i <=this.x+this.width; i++){
                 for(let j = this.y; j<=this.y+this.height; j++){
@@ -131,10 +139,13 @@ class Objects{
             this.x++
 
         }
-        console.log(this.direction)
+        //console.log(this.direction)
         
         //this.x++
         this.create()
+    }
+    animation(){
+
     }
     end(){
         for(let i = this.x; i <=this.x+this.width; i++){
@@ -156,6 +167,7 @@ class Images {
         this.image.src = imageSrc
     }
     create(){
+        ctx.clearRect(0,0,cWidth,cHeight)
         ctx.drawImage(this.image, this.x, this.y, this.width, this.height)
     }
 }
@@ -179,19 +191,19 @@ let block8 = new Objects(0,Math.round(cHeight* 7/10),Math.round(topWidth*3/4),bl
 let obstacle3=new Objects(Math.round(topWidth*2/5),Math.round(cHeight* 7/10)-blockHeight,blockHeight,blockHeight,"black")
 let obstacle4=new Objects(cWidth-Math.round(topWidth*2/5),Math.round(cHeight* 7/10)-blockHeight,blockHeight,blockHeight,"black")
 
- let finishLine2 = new Objects(cWidth-(blockHeight*2),cHeight-50,blockHeight*2,blockHeight*2,"blue" )
- let finishLine = new Objects(0,cHeight-50,blockHeight*2,blockHeight*2,"blue" )
- let obstacle1 =new Objects(Math.round(topWidth*3/5),topRowHeight-blockHeight,blockHeight,blockHeight,"black")
- let obstacle2=new Objects(cWidth-Math.round(topWidth*3/5),topRowHeight-blockHeight,blockHeight,blockHeight,"black")
- let obstacle6 = new Objects(Math.round(cWidth*3/5)-(blockHeight*2),Math.round(cHeight/2),blockHeight*2,blockHeight,"red", 'left')
- let obstacle5 = new Objects((Math.round(topWidth*2/4))+Math.round(cWidth*1/4)+blockHeight,Math.round(cHeight/2),blockHeight*2,blockHeight,"purple",'right')
- const speed = Math.round(cWidth/48)
- console.log(playerSize)
- const downAccelerate = 1
+let finishLine2 = new Objects(cWidth-(blockHeight*2),cHeight-50,blockHeight*2,blockHeight*2,"blue" )
+let finishLine = new Objects(0,cHeight-50,blockHeight*2,blockHeight*2,"blue" )
+let obstacle1 =new Objects(Math.round(topWidth*3/5),topRowHeight-blockHeight,blockHeight,blockHeight,"black")
+let obstacle2=new Objects(cWidth-Math.round(topWidth*3/5),topRowHeight-blockHeight,blockHeight,blockHeight,"black")
+let obstacle6 = new Objects(Math.round(cWidth*3/5)-(blockHeight*2),Math.round(cHeight/2),Math.round(blockHeight*3/2),blockHeight,"red", 'left')
+let obstacle5 = new Objects((Math.round(topWidth*2/4))+Math.round(cWidth*1/4)+blockHeight,Math.round(cHeight/2),Math.round(blockHeight*3/2),blockHeight,"purple",'right')
+const speed = Math.round(cWidth/48)
+//console.log(playerSize)
+const downAccelerate = 1
 
 class Players{
     static numGames = 0
-    constructor(x,y,color){
+    constructor(x,y,direction,imageSrc){
         this.wins = 0
         this.x = x
         this.y = y
@@ -201,72 +213,100 @@ class Players{
         }
         this.width = blockHeight
         this.height = blockHeight      
-        this.color = color
+        this.color = "orange"
+        this.image = new Image()
+        this.image.src = imageSrc
+        this.direction = direction
         
     }
-    create(){
+    create(imageSrc){
         ctx.fillStyle=this.color
-        ctx.fillRect(this.x,this.y,this.width,this.height)         
-    }           
+        ctx.fillRect(this.x,this.y,this.width,this.height)
+        }           
     gravityUpdate(){            
         //p.innerText = `${cHeight}, ${this.y+this.height}`
         this.y+=this.jump.gravity
         if(grid[this.x][this.y]!='taken'){
+            //this.direction = 'jump'
             this.y-=this.jump.up
         }
         if((this.y + this.height + this.jump.gravity < cHeight)){
+            this.direction= 'fall'
             this.jump.gravity+=downAccelerate
             this.count++             
         }
         else{
+            //this.direction = 'idle'
             this.jump.gravity = 0
             this.jump.up = 0
             this.count =0
         }
-        this.create()
+        //this.create()
+
+        if(this.direction == 'right'){
+            ctx.drawImage(this.image, this.x, this.y, this.width, this.height)
+        }
+        if(this.direction == 'left'){
+            ctx.drawImage(this.image, this.x, this.y, this.width, this.height)
+        }
+        if(this.direction == 'fall'){
+            ctx.drawImage(this.image, this.x, this.y, this.width, this.height)
+        }
+        if(this.direction == 'jump'){
+            ctx.drawImage(this.image, this.x, this.y, this.width, this.height)
+        }
     }
 }
-let butcher = new Players(50,70,'red')
-let piglet = new Players(5,10,'pink')
+let butcher = new Players(50,70,'right','sprites/frogRunRight(32x32) copy.png')
+let piglet = new Players(5,10,'left','sprites/bunnyRunLeft(34x44).png')
 const jumpVar = Math.round(cHeight/62)
 function movement(){
         if(pressedKeys.ArrowUp&&butcher.jump.gravity==0 ){
         if((typeof(grid[butcher.x][butcher.y])!='string')&&typeof(grid[butcher.x][butcher.y+butcher.height])!='string'){
+            butcher.direction = 'jump'
+            butcher.imageSrc = 'sprites/frogJump(32x32).png'
             butcher.jump.up +=jumpVar
         }
         }             
         if(pressedKeys.w&&piglet.jump.gravity==0){
         if((typeof(grid[piglet.x][piglet.y])!='string')&&typeof(grid[piglet.x][piglet.y+piglet.height])!='string'){
+            piglet.direction = 'jump'
+            piglet.imageSrc = 'sprites/bunnyJump.png'
             piglet.jump.up += jumpVar                
         }
         }
             if(pressedKeys.ArrowLeft){
                 if((typeof(grid[(butcher.x)-speed][butcher.y])!='string')&&(typeof(grid[(butcher.x)-speed][butcher.y+butcher.height])!='string')){
+                    butcher.direction = 'left'
+                    butcher.imageSrc = 'sprites/frogRunLeft(32x32).png'
                     butcher.x -= speed
                 }
             }
             if( pressedKeys.a){
                 if((typeof(grid[(piglet.x)-speed][piglet.y])!='string')&&(typeof(grid[(piglet.x)-speed][piglet.y+piglet.height])!='string')){
+                    piglet.direction = 'left'
+                    piglet.imageSrc = 'sprites/bunnyRunLeft(34x44).png'
                     piglet.x -= speed
                 }
             }
             if(pressedKeys.ArrowRight){
                 if((typeof(grid[(butcher.x+butcher.width)+speed][butcher.y])!='string')&&(typeof(grid[(butcher.x+butcher.width)+speed][butcher.y+butcher.height])!='string')){
+                    butcher.direction = 'right'
+                    butcher.imageSrc = 'sprites/frogRunRight(32x32) copy.png'
                     butcher.x +=speed
                 }
             }
             if(pressedKeys.d){
                 if((typeof(grid[(piglet.x+piglet.width)+speed][piglet.y])!='string')&&(typeof(grid[(piglet.x+piglet.width)+speed][piglet.y+piglet.height])!='string')){
+                    piglet.direction = 'right'
+                    piglet.imageSrc = 'sprites/bunnyRunRight(34x44) copy.png'
                     piglet.x += speed
                 }                        
             }
         }
         function defaultSetting(){
-            //ctx.fillStyle = "aquamarine"
-            //ctx.fillRect(0,0,cWidth,cHeight)
             background.create()
             block.create()
-            //block2.create()
             block3.create()
             block4.create()
             block5.create()
