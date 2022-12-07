@@ -15,9 +15,7 @@ instructionsMessage.style.display ="none"
 message.style.display = 'none'
 let endGame = false
 backToMenu.style.display ='none'
-const frogJump = new Image()
- frogJump.src= "./sprites/frogJump(32x32).png"
-//console.log(frogJump)
+
 
 backToMenu.addEventListener('click',function(){
     message.style.display = 'none'
@@ -87,10 +85,10 @@ function startGame(){
      piglet.y = 10
      butcher.x = cWidth-playerSize
      butcher.y = 10
-     piglet.direction = 'left'
-                    piglet.imageSrc = 'sprites/bunnyRunLeft(34x44).png'
-                    butcher.direction = 'right'
-                    butcher.imageSrc = 'sprites/frogRunRight(32x32) copy.png'
+     piglet.direction = 'right'
+                    piglet.imageSrc = 'sprites/maskRunRight(32x32).png'
+                    butcher.direction = 'left'
+                    butcher.imageSrc = 'sprites/frogRunRight(32x32).png'
     animate()  
 }
 
@@ -212,19 +210,21 @@ class Players{
             gravity: 0
         }
         this.width = blockHeight
-        this.height = blockHeight      
+        this.height = blockHeight   
         this.color = "orange"
         this.image = new Image()
         this.image.src = imageSrc
         this.direction = direction
+        this.frames = 0
         
     }
-    create(imageSrc){
+    create(){
         ctx.fillStyle=this.color
         ctx.fillRect(this.x,this.y,this.width,this.height)
         }           
-    gravityUpdate(){            
-        //p.innerText = `${cHeight}, ${this.y+this.height}`
+    gravityUpdate(){   
+        //console.log(this.imageSrc)
+        
         this.y+=this.jump.gravity
         if(grid[this.x][this.y]!='taken'){
             //this.direction = 'jump'
@@ -241,24 +241,28 @@ class Players{
             this.jump.up = 0
             this.count =0
         }
-        //this.create()
-
+        this.frames++
+        if(this.frames <12) this.frames = 0         
+        //p.innerText = `${cHeight}, ${this.y+this.height}`
         if(this.direction == 'right'){
-            ctx.drawImage(this.image, this.x, this.y, this.width, this.height)
+            ctx.drawImage(this.image,32*this.frames,0,32,32, this.x, this.y, this.width, this.height)
         }
         if(this.direction == 'left'){
-            ctx.drawImage(this.image, this.x, this.y, this.width, this.height)
+            ctx.drawImage(this.image,32*this.frames,0,32,32, this.x, this.y, this.width, this.height)
         }
-        if(this.direction == 'fall'){
-            ctx.drawImage(this.image, this.x, this.y, this.width, this.height)
+        if(this.jump.gravity > 0){
+            ctx.drawImage(this.image,32*this.frames,0,32,32, this.x, this.y, this.width, this.height)
+            console.log('update')
         }
-        if(this.direction == 'jump'){
-            ctx.drawImage(this.image, this.x, this.y, this.width, this.height)
+        if(this.jump.up > 0){
+            ctx.drawImage(this.image,32*this.frames,0,32,32, this.x, this.y, this.width, this.height)
         }
     }
+        //this.create()
+
 }
-let butcher = new Players(50,70,'right','sprites/frogRunRight(32x32) copy.png')
-let piglet = new Players(5,10,'left','sprites/bunnyRunLeft(34x44).png')
+let butcher = new Players(50,70,'left','sprites/frogRunLeft(32x32) copy.png')
+let piglet = new Players(5,10,'right','sprites/maskRunRight(32x32).png')
 const jumpVar = Math.round(cHeight/62)
 function movement(){
         if(pressedKeys.ArrowUp&&butcher.jump.gravity==0 ){
@@ -271,35 +275,35 @@ function movement(){
         if(pressedKeys.w&&piglet.jump.gravity==0){
         if((typeof(grid[piglet.x][piglet.y])!='string')&&typeof(grid[piglet.x][piglet.y+piglet.height])!='string'){
             piglet.direction = 'jump'
-            piglet.imageSrc = 'sprites/bunnyJump.png'
+            piglet.imageSrc = 'sprites/maskJump(32x32).png'
             piglet.jump.up += jumpVar                
         }
         }
             if(pressedKeys.ArrowLeft){
                 if((typeof(grid[(butcher.x)-speed][butcher.y])!='string')&&(typeof(grid[(butcher.x)-speed][butcher.y+butcher.height])!='string')){
                     butcher.direction = 'left'
-                    butcher.imageSrc = 'sprites/frogRunLeft(32x32).png'
+                    butcher.imageSrc = 'sprites/frogRunLeft(32x32) copy.png'
                     butcher.x -= speed
                 }
             }
             if( pressedKeys.a){
                 if((typeof(grid[(piglet.x)-speed][piglet.y])!='string')&&(typeof(grid[(piglet.x)-speed][piglet.y+piglet.height])!='string')){
                     piglet.direction = 'left'
-                    piglet.imageSrc = 'sprites/bunnyRunLeft(34x44).png'
+                    piglet.imageSrc = 'sprites/maskRunLeft(32x32).png'
                     piglet.x -= speed
                 }
             }
             if(pressedKeys.ArrowRight){
                 if((typeof(grid[(butcher.x+butcher.width)+speed][butcher.y])!='string')&&(typeof(grid[(butcher.x+butcher.width)+speed][butcher.y+butcher.height])!='string')){
                     butcher.direction = 'right'
-                    butcher.imageSrc = 'sprites/frogRunRight(32x32) copy.png'
+                    butcher.imageSrc = 'sprites/frogRunRight(32x32).png'
                     butcher.x +=speed
                 }
             }
             if(pressedKeys.d){
                 if((typeof(grid[(piglet.x+piglet.width)+speed][piglet.y])!='string')&&(typeof(grid[(piglet.x+piglet.width)+speed][piglet.y+piglet.height])!='string')){
                     piglet.direction = 'right'
-                    piglet.imageSrc = 'sprites/bunnyRunRight(34x44) copy.png'
+                    piglet.imageSrc = 'sprites/maskRunRight(32x32).png'
                     piglet.x += speed
                 }                        
             }
@@ -343,6 +347,7 @@ function movement(){
             defaultSetting()
             butcher.gravityUpdate()
             piglet.gravityUpdate()
+            console.log(piglet.imageSrc)
             if(piglet.jump.gravity != 0 &&grid[piglet.x+piglet.width][piglet.y+piglet.height]=='taken'||grid[piglet.x][piglet.y+piglet.height+piglet.jump.gravity]=='taken'){
                 piglet.jump.gravity =0
                 piglet.jump.up =0
