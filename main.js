@@ -94,13 +94,15 @@ function startGame(){
 
 
 class Objects{
-    constructor(x,y,width,height,color,direction){
+    constructor(x,y,width,height,imageSrc){
         this.x =x
         this.y = y
         this.width = width
         this.height = height
-        this.color = color
-        this.direction = direction
+        //this.color = color
+        this.direction = ' '
+        this.image = new Image()
+        this.image.src = imageSrc
     }
     create(){
         for(let i = this.x; i <=this.x+this.width; i++){
@@ -108,8 +110,9 @@ class Objects{
                 grid[i][j]='taken'
             }
         }
-        ctx.fillStyle=this.color
-        ctx.fillRect(this.x,this.y,this.width,this.height)
+        //ctx.fillStyle=this.color
+        //ctx.fillRect(this.x,this.y,this.width,this.height)
+        ctx.drawImage(this.image,this.x,this.y,this.width,this.height)
     }
     moving(){
         if(this.direction=='left'){     
@@ -175,26 +178,28 @@ let blockHeight = Math.round(cWidth/37)
 let playerSize = Math.round(blockHeight*9/8)
 let topWidth = Math.round(cWidth/3)
 let topRowHeight = Math.round(cHeight/8)
-let block3 = new Objects(0,topRowHeight,topWidth,blockHeight,"black") //90 
-let block = new Objects(cWidth-(topWidth),topRowHeight,topWidth,blockHeight,"black") //90 
-let block4 = new Objects(Math.round((cWidth/5)*2),topRowHeight*2+blockHeight,Math.round(cWidth/5),blockHeight,"yellow")
-let block5 = new Objects(topWidth,(topRowHeight*2)+(blockHeight)*2,topWidth,blockHeight,"blue")
-let block6 = new Objects((Math.round(topWidth*3/4)),(topRowHeight*2)+(blockHeight*3),Math.round(cWidth/2),blockHeight,"black")
-let block7 = new Objects((Math.round(topWidth*2/4)),Math.round(cHeight/2),Math.round(cWidth*1/4),blockHeight,"pink")
-let block12 = new Objects(Math.round(cWidth*3/5),Math.round(cHeight/2),Math.round(cWidth*1/4),blockHeight,"pink")
-let block10 = new Objects(Math.round(cWidth*3/5),Math.round(cHeight* 7/10)+blockHeight,Math.round((cWidth/5)*2),blockHeight,"orange")
-let block11 = new Objects(0,Math.round(cHeight* 7/10)+blockHeight,Math.round((cWidth/5)*2),blockHeight,"green")
-let block9 = new Objects(cWidth-Math.round(topWidth*3/4),Math.round(cHeight* 7/10),Math.round(topWidth*3/4),blockHeight,"hotpink")
-let block8 = new Objects(0,Math.round(cHeight* 7/10),Math.round(topWidth*3/4),blockHeight,"black")
-let obstacle3=new Objects(Math.round(topWidth*2/5),Math.round(cHeight* 7/10)-blockHeight,blockHeight,blockHeight,"black")
-let obstacle4=new Objects(cWidth-Math.round(topWidth*2/5),Math.round(cHeight* 7/10)-blockHeight,blockHeight,blockHeight,"black")
+let block3 = new Objects(0,topRowHeight,topWidth,blockHeight,"sprites/2.png") //90 
+let block = new Objects(cWidth-(topWidth),topRowHeight,topWidth,blockHeight,"sprites/2.png") //90 
+let block4 = new Objects(Math.round((cWidth/5)*2),topRowHeight*2+blockHeight,Math.round(cWidth/5),blockHeight,"sprites/2.png")
+let block5 = new Objects(topWidth,(topRowHeight*2)+(blockHeight)*2,topWidth,blockHeight,"sprites/2.png")
+let block6 = new Objects((Math.round(topWidth*3/4)),(topRowHeight*2)+(blockHeight*3),Math.round(cWidth/2),blockHeight,"sprites/2.png")
+let block7 = new Objects((Math.round(topWidth*2/4)),Math.round(cHeight/2),Math.round(cWidth*1/4),blockHeight,"sprites/2.png")
+let block12 = new Objects(Math.round(cWidth*3/5),Math.round(cHeight/2),Math.round(cWidth*1/4),blockHeight,"sprites/2.png")
+let block10 = new Objects(Math.round(cWidth*3/5),Math.round(cHeight* 7/10)+blockHeight,Math.round((cWidth/5)*2),blockHeight,"sprites/2.png")
+let block11 = new Objects(0,Math.round(cHeight* 7/10)+blockHeight,Math.round((cWidth/5)*2),blockHeight,"sprites/2.png")
+let block9 = new Objects(cWidth-Math.round(topWidth*3/4),Math.round(cHeight* 7/10),Math.round(topWidth*3/4),blockHeight,"sprites/2.png")
+let block8 = new Objects(0,Math.round(cHeight* 7/10),Math.round(topWidth*3/4),blockHeight,"sprites/2.png")
+let obstacle3=new Objects(Math.round(topWidth*2/5),Math.round(cHeight* 7/10)-blockHeight,blockHeight,blockHeight,"sprites/stone.png")
+let obstacle4=new Objects(cWidth-Math.round(topWidth*2/5),Math.round(cHeight* 7/10)-blockHeight,blockHeight,blockHeight,"sprites/stone.png")
 
-let finishLine2 = new Objects(cWidth-(blockHeight*2),cHeight-50,blockHeight*2,blockHeight*2,"blue" )
-let finishLine = new Objects(0,cHeight-50,blockHeight*2,blockHeight*2,"blue" )
-let obstacle1 =new Objects(Math.round(topWidth*3/5),topRowHeight-blockHeight,blockHeight,blockHeight,"black")
-let obstacle2=new Objects(cWidth-Math.round(topWidth*3/5),topRowHeight-blockHeight,blockHeight,blockHeight,"black")
-let obstacle6 = new Objects(Math.round(cWidth*3/5)-(blockHeight*2),Math.round(cHeight/2),Math.round(blockHeight*3/2),blockHeight,"red", 'left')
-let obstacle5 = new Objects((Math.round(topWidth*2/4))+Math.round(cWidth*1/4)+blockHeight,Math.round(cHeight/2),Math.round(blockHeight*3/2),blockHeight,"purple",'right')
+let finishLine2 = new Objects(cWidth-(blockHeight*2),cHeight-50,blockHeight*2,blockHeight*2,"sprites/crate.png" )
+let finishLine = new Objects(0,cHeight-50,blockHeight*2,blockHeight*2,"sprites/crate.png" )
+let obstacle1 =new Objects(Math.round(topWidth*3/5),topRowHeight-blockHeight,blockHeight,blockHeight,"sprites/stone.png")
+let obstacle2=new Objects(cWidth-Math.round(topWidth*3/5),topRowHeight-blockHeight,blockHeight,blockHeight,"sprites/stone.png")
+let obstacle6 = new Objects(Math.round(cWidth*3/5)-(blockHeight*2),Math.round(cHeight/2),Math.round(blockHeight*3/2),blockHeight,"sprites/crate.png", 'left')
+obstacle6.direction = 'left'
+let obstacle5 = new Objects((Math.round(topWidth*2/4))+Math.round(cWidth*1/4)+blockHeight,Math.round(cHeight/2),Math.round(blockHeight*3/2),blockHeight,"sprites/crate.png",'right')
+obstacle5.direction = 'right'
 const speed = Math.round(cWidth/48)
 //console.log(playerSize)
 const downAccelerate = 1
@@ -211,7 +216,7 @@ class Players{
         }
         this.width = blockHeight
         this.height = blockHeight   
-        this.color = "orange"
+        //this.color = "orange"
         this.image = new Image()
         this.image.src = imageSrc
         this.direction = direction
