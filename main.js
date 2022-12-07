@@ -85,10 +85,10 @@ function startGame(){
      piglet.y = 10
      butcher.x = cWidth-playerSize
      butcher.y = 10
-     piglet.direction = 'right'
-                    piglet.imageSrc = 'sprites/maskRunRight(32x32).png'
-                    butcher.direction = 'left'
-                    butcher.imageSrc = 'sprites/frogRunRight(32x32).png'
+     //piglet.direction = 'right'
+                    //piglet.imageSrc = 'sprites/maskRunRight(32x32).png'
+                    //butcher.direction = 'left'
+                    //butcher.imageSrc = 'sprites/frogRunRight(32x32).png'
     animate()  
 }
 
@@ -177,27 +177,27 @@ let blockHeight = Math.round(cWidth/37)
 let playerSize = Math.round(blockHeight*9/8)
 let topWidth = Math.round(cWidth/3)
 let topRowHeight = Math.round(cHeight/8)
-let block3 = new Objects(0,topRowHeight,topWidth,blockHeight,"sprites/2.png") //90 
-let block = new Objects(cWidth-(topWidth),topRowHeight,topWidth,blockHeight,"sprites/2.png") //90 
-let block4 = new Objects(Math.round((cWidth/5)*2),topRowHeight*2+blockHeight,Math.round(cWidth/5),blockHeight,"sprites/2.png")
-let block5 = new Objects(topWidth,(topRowHeight*2)+(blockHeight)*2,topWidth,blockHeight,"sprites/2.png")
-let block6 = new Objects((Math.round(topWidth*3/4)),(topRowHeight*2)+(blockHeight*3),Math.round(cWidth/2),blockHeight,"sprites/2.png")
-let block7 = new Objects((Math.round(topWidth*2/4)),Math.round(cHeight/2),Math.round(cWidth*1/4),blockHeight,"sprites/2.png")
-let block12 = new Objects(Math.round(cWidth*3/5),Math.round(cHeight/2),Math.round(cWidth*1/4),blockHeight,"sprites/2.png")
-let block10 = new Objects(Math.round(cWidth*3/5),Math.round(cHeight* 7/10)+blockHeight,Math.round((cWidth/5)*2),blockHeight,"sprites/2.png")
-let block11 = new Objects(0,Math.round(cHeight* 7/10)+blockHeight,Math.round((cWidth/5)*2),blockHeight,"sprites/2.png")
-let block9 = new Objects(cWidth-Math.round(topWidth*3/4),Math.round(cHeight* 7/10),Math.round(topWidth*3/4),blockHeight,"sprites/2.png")
-let block8 = new Objects(0,Math.round(cHeight* 7/10),Math.round(topWidth*3/4),blockHeight,"sprites/2.png")
-let obstacle3=new Objects(Math.round(topWidth*2/5),Math.round(cHeight* 7/10)-blockHeight,blockHeight,blockHeight,"sprites/stone.png")
-let obstacle4=new Objects(cWidth-Math.round(topWidth*2/5),Math.round(cHeight* 7/10)-blockHeight,blockHeight,blockHeight,"sprites/stone.png")
+let block3 = new Objects(0,topRowHeight,topWidth,blockHeight,"./sprites/2.png") //90 
+let block = new Objects(cWidth-(topWidth),topRowHeight,topWidth,blockHeight,"./sprites/2.png") //90 
+let block4 = new Objects(Math.round((cWidth/5)*2),topRowHeight*2+blockHeight,Math.round(cWidth/5),blockHeight,"./sprites/2.png")
+let block5 = new Objects(topWidth,(topRowHeight*2)+(blockHeight)*2,topWidth,blockHeight,"./sprites/2.png")
+let block6 = new Objects((Math.round(topWidth*3/4)),(topRowHeight*2)+(blockHeight*3),Math.round(cWidth/2),blockHeight,"./sprites/2.png")
+let block7 = new Objects((Math.round(topWidth*2/4)),Math.round(cHeight/2),Math.round(cWidth*1/4),blockHeight,"./sprites/2.png")
+let block12 = new Objects(Math.round(cWidth*3/5),Math.round(cHeight/2),Math.round(cWidth*1/4),blockHeight,"./sprites/2.png")
+let block10 = new Objects(Math.round(cWidth*3/5),Math.round(cHeight* 7/10)+blockHeight,Math.round((cWidth/5)*2),blockHeight,"./sprites/2.png")
+let block11 = new Objects(0,Math.round(cHeight* 7/10)+blockHeight,Math.round((cWidth/5)*2),blockHeight,"./sprites/2.png")
+let block9 = new Objects(cWidth-Math.round(topWidth*3/4),Math.round(cHeight* 7/10),Math.round(topWidth*3/4),blockHeight,"./sprites/2.png")
+let block8 = new Objects(0,Math.round(cHeight* 7/10),Math.round(topWidth*3/4),blockHeight,"./sprites/2.png")
+let obstacle3=new Objects(Math.round(topWidth*2/5),Math.round(cHeight* 7/10)-blockHeight,blockHeight,blockHeight,"./sprites/stone.png")
+let obstacle4=new Objects(cWidth-Math.round(topWidth*2/5),Math.round(cHeight* 7/10)-blockHeight,blockHeight,blockHeight,"./sprites/stone.png")
 
-let finishLine2 = new Objects(cWidth-(blockHeight*2),cHeight-(blockHeight*2),blockHeight*2,blockHeight*2,"sprites/rightFinishLine.png" )
-let finishLine = new Objects(0,cHeight-(blockHeight*2),blockHeight*2,blockHeight*2,"sprites/leftFinishLine.png" )
-let obstacle1 =new Objects(Math.round(topWidth*3/5),topRowHeight-blockHeight,blockHeight,blockHeight,"sprites/stone.png")
-let obstacle2=new Objects(cWidth-Math.round(topWidth*3/5),topRowHeight-blockHeight,blockHeight,blockHeight,"sprites/stone.png")
-let obstacle6 = new Objects(Math.round(cWidth*3/5)-(blockHeight*2),Math.round(cHeight/2),Math.round(blockHeight*3/2),blockHeight,"sprites/crate.png", 'left')
+let finishLine2 = new Objects(cWidth-(blockHeight*2),cHeight-(blockHeight*2),blockHeight*2,blockHeight*2,"./sprites/rightFinishLine.png" )
+let finishLine = new Objects(0,cHeight-(blockHeight*2),blockHeight*2,blockHeight*2,"./sprites/leftFinishLine.png" )
+let obstacle1 =new Objects(Math.round(topWidth*3/5),topRowHeight-blockHeight,blockHeight,blockHeight,"./sprites/stone.png")
+let obstacle2=new Objects(cWidth-Math.round(topWidth*3/5),topRowHeight-blockHeight,blockHeight,blockHeight,"./sprites/stone.png")
+let obstacle6 = new Objects(Math.round(cWidth*3/5)-(blockHeight*2),Math.round(cHeight/2),Math.round(blockHeight*3/2),blockHeight,"./sprites/crate.png", 'left')
 obstacle6.direction = 'left'
-let obstacle5 = new Objects((Math.round(topWidth*2/4))+Math.round(cWidth*1/4)+blockHeight,Math.round(cHeight/2),Math.round(blockHeight*3/2),blockHeight,"sprites/crate.png",'right')
+let obstacle5 = new Objects((Math.round(topWidth*2/4))+Math.round(cWidth*1/4)+blockHeight,Math.round(cHeight/2),Math.round(blockHeight*3/2),blockHeight,"./sprites/crate.png",'right')
 obstacle5.direction = 'right'
 const speed = Math.round(cWidth/48)
 //console.log(playerSize)
@@ -205,7 +205,7 @@ const downAccelerate = 1
 
 class Players{
     static numGames = 0
-    constructor(name,x,y,direction,imageSrc){
+    constructor(name,x,y,imageSrc){
         this.wins = 0
         this.x = x
         this.y = y
@@ -218,9 +218,10 @@ class Players{
         this.name = name
         this.image = new Image()
         this.image.src = imageSrc
-        this.direction = direction
+        this.direction 
         this.numImgs = 0 
         this.frameNum = 0
+        this.drawVar = ' '
         
     }
     create(){
@@ -237,7 +238,7 @@ class Players{
             this.y-=this.jump.up
         }
         if((this.y + this.height + this.jump.gravity < cHeight)){
-            this.direction= 'right'
+            //this.direction= 'right'
             this.jump.gravity+=downAccelerate
             this.count++             
         }
@@ -246,98 +247,108 @@ class Players{
             this.jump.up = 0
             this.count =0
         }
-        //console.log(this.jump.gravity, this.jump.up)
-        //console.log(this.direction, this.image.src)
 
-                
-        //p.innerText = `${cHeight}, ${this.y+this.height}`
-        // if(this.direction == 'right'){
-        //     ctx.drawImage(this.image,32*this.frames,0,32,32, this.x, this.y, this.width, this.height)
+        // if(this.jump.gravity<1){
+        //     if(this.name=='frog'){
+        //         this.jump.gravity <this.jump.up ? this.image.src = 'sprites/frogJump(32x32).png':this.image.src ='sprites/frogFall(32x32).png'
+        //     }
+        //     else{
+        //         this.jump.gravity <this.jump.up ? this.image.src = 'sprites/maskJump(32x32).png':this.image.src ='sprites/maskFall(32x32).png'
+        //     }
+        //     //this.name == 'frog' ? this.image.src ='sprites/frogFall(32x32).png' : this.image.src ='sprites/maskFall(32x32).png' 
+        //     ctx.drawImage(this.image,this.x,this.y,this.width,this.height)
         // }
-        // if(this.direction == 'left'){
-        //     ctx.drawImage(this.image,32*this.frames,0,32,32, this.x, this.y, this.width, this.height)
+        // if(this.jump.gravity<2){
+        //     this.numImgs = 12
+        //     if(this.frameNum == this.numIgs){
+        //         this.frameNum = 0
+        //     }
+        //     ctx.drawImage(this.image,this.frameNum*32,0,32,32, this.x, this.y, this.width, this.height)
+        //     this.count++
         // }
-        // if(this.jump.gravity > 0){
-        //     ctx.drawImage(this.image,32*this.frames,0,32,32, this.x, this.y, this.width, this.height)
-        //     console.log('update')
-        // }
-        // if(this.jump.up > 0){
-        //     ctx.drawImage(this.image,32*this.frames,0,32,32, this.x, this.y, this.width, this.height)
-        // }
-        //console.log(this.jump.gravity)
-        if(this.jump.gravity<1){
-            if(this.name=='frog'){
-                this.jump.gravity <this.jump.up ? this.image.src = 'sprites/frogJump(32x32).png':this.image.src ='sprites/frogFall(32x32).png'
+        //console.log(this.image.src)
+        // if((this.jump.gravity <2) &&(this.image.src !== `sprites/${this.name}Fall(32x32).png`)){
+            //     console.log('yes')
+            //     this.drawVar = 0
+            // }
+            // else if(this.jump.gravity<2){
+                //     this.drawVar = this.frameNum*32
+                // }
+                //console.log(this.image.src)
+            if((this.jump.gravity<2)){
+                if(this.image.src != `./sprites/${this.name}Fall(32x32).png`){
+                    this.drawVar = this.frameNum*32
+                    console.log(this.image.src != `./sprites/${this.name}Fall(32x32).png`)
+                }
+                else{
+                    this.drawVar = 0
+                    console.log('no')
+                }
+            }//put everything underneath in an else
+            else if(this.jump.gravity < this.jump.up){
+                this.image.src = `./sprites/${this.name}Jump(32x32).png`
+                this.drawVar = 0
             }
             else{
-                this.jump.gravity <this.jump.up ? this.image.src = 'sprites/maskJump(32x32).png':this.image.src ='sprites/maskFall(32x32).png'
+                this.image.src =`./sprites/${this.name}Fall(32x32).png`
+                this.drawVar = 0
             }
-            //this.name == 'frog' ? this.image.src ='sprites/frogFall(32x32).png' : this.image.src ='sprites/maskFall(32x32).png' 
-            ctx.drawImage(this.image,this.x,this.y,this.width,this.height)
-        }
-        if(this.jump.gravity<2){
-            this.numImgs = 12
-            if(this.frameNum == this.numIgs){
-                this.frameNum = 0
-                //console.log('loop')
-            }
-            //onsole.log(this.numImgs,this.frameNum, this.jump.gravity)
-            ctx.drawImage(this.image,this.frameNum*32,0,32,32, this.x, this.y, this.width, this.height)
-            this.count++
-        }
+
+            //console.log(this.image.src,this.image,this.drawVar,0,32,32,this.x,this.y,this.width,this.height)
+        ctx.drawImage(this.image,this.drawVar,0,32,32,this.x,this.y,this.width,this.height)
+
+
     
     }
         
 
 }
-let butcher = new Players('frog',50,70,'left','sprites/frogRunLeft(32x32) copy.png')
-let piglet = new Players('mask',5,10,'right','sprites/maskRunRight(32x32).png')
+//sprites/frogRunLeft(32x32) copy.png, 
+let butcher = new Players('frog',50,70,'./sprites/frogRunLeft(32x32).png')
+let piglet = new Players('mask',5,10,'./sprites/maskRunRight(32x32).png')
 const jumpVar = Math.round(cHeight/62)
 function movement(){
         if(pressedKeys.ArrowUp&&butcher.jump.gravity==0 ){
         if((typeof(grid[butcher.x][butcher.y])!='string')&&typeof(grid[butcher.x][butcher.y+butcher.height])!='string'){
-            butcher.direction = 'jump'
-            butcher.image.src = 'sprites/frogJump(32x32).png'
             butcher.jump.up +=jumpVar
         }
         }             
         if(pressedKeys.w&&piglet.jump.gravity==0){
         if((typeof(grid[piglet.x][piglet.y])!='string')&&typeof(grid[piglet.x][piglet.y+piglet.height])!='string'){
-            piglet.direction = 'jump'
-            piglet.image.src = 'sprites/maskJump(32x32).png'
             piglet.jump.up += jumpVar                
         }
         }
             if(pressedKeys.ArrowLeft){
                 if((typeof(grid[(butcher.x)-speed][butcher.y])!='string')&&(typeof(grid[(butcher.x)-speed][butcher.y+butcher.height])!='string')){
-                    butcher.direction = 'left'
+
+                    butcher.image.src = './sprites/frogRunLeft(32x32).png'
                     butcher.frameNum ==11 ? butcher.frameNum=0:butcher.frameNum++
-                    butcher.image.src = 'sprites/frogRunLeft(32x32) copy.png'
+                    console.log(butcher.image.src)
                     butcher.x -= speed
                 }
             }
             if( pressedKeys.a){
                 if((typeof(grid[(piglet.x)-speed][piglet.y])!='string')&&(typeof(grid[(piglet.x)-speed][piglet.y+piglet.height])!='string')){
-                    piglet.direction = 'left'
+                    //piglet.direction = 'left'
 
+                    piglet.image.src = './sprites/maskRunLeft(32x32).png'
                     piglet.frameNum ==11 ? piglet.frameNum=0:piglet.frameNum++
-                    piglet.image.src = 'sprites/maskRunLeft(32x32).png'
                     piglet.x -= speed
                 }
             }
             if(pressedKeys.ArrowRight){
                 if((typeof(grid[(butcher.x+butcher.width)+speed][butcher.y])!='string')&&(typeof(grid[(butcher.x+butcher.width)+speed][butcher.y+butcher.height])!='string')){
-                    butcher.direction = 'right'
+                    //butcher.direction = 'right'
+                    butcher.image.src = './sprites/frogRunRight(32x32).png'
                     butcher.frameNum ==11 ? butcher.frameNum=0:butcher.frameNum++
-                    butcher.image.src = 'sprites/frogRunRight(32x32).png'
                     butcher.x +=speed
                 }
             }
             if(pressedKeys.d){
                 if((typeof(grid[(piglet.x+piglet.width)+speed][piglet.y])!='string')&&(typeof(grid[(piglet.x+piglet.width)+speed][piglet.y+piglet.height])!='string')){
-                    piglet.direction = 'right'
+                    //piglet.direction = 'right'
+                    piglet.image.src = './sprites/maskRunRight(32x32).png'
                     piglet.frameNum ==11 ? piglet.frameNum=0:piglet.frameNum++
-                    piglet.imageSrc = 'sprites/maskRunRight(32x32).png'
                     piglet.x += speed
                 }                        
             }
