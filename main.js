@@ -187,8 +187,8 @@ let block8 = new Objects(0,Math.round(cHeight* 7/10),Math.round(topWidth*3/4),bl
 let obstacle3=new Objects(Math.round(topWidth*2/5),Math.round(cHeight* 7/10)-blockHeight,blockHeight,blockHeight,"./sprites/stone.png")
 let obstacle4=new Objects(cWidth-Math.round(topWidth*2/5),Math.round(cHeight* 7/10)-blockHeight,blockHeight,blockHeight,"./sprites/stone.png")
 
-let finishLine2 = new Objects(cWidth-(blockHeight*2),cHeight-(blockHeight*2),blockHeight*2,blockHeight*2,"./sprites/rightFinishLine.png" )
-let finishLine = new Objects(0,cHeight-(blockHeight*2),blockHeight*2,blockHeight*2,"./sprites/leftFinishLine.png" )
+let finishLine2 = new Objects(cWidth-(blockHeight*3),cHeight-(blockHeight*3),blockHeight*3,blockHeight*3,"./sprites/rightFinishLine.png" )
+let finishLine = new Objects(0,cHeight-(blockHeight*3),blockHeight*3,blockHeight*3,"./sprites/leftFinishLine.png" )
 let obstacle1 =new Objects(Math.round(topWidth*3/5),topRowHeight-blockHeight,blockHeight,blockHeight,"./sprites/stone.png")
 let obstacle2=new Objects(cWidth-Math.round(topWidth*3/5),topRowHeight-blockHeight,blockHeight,blockHeight,"./sprites/stone.png")
 let obstacle6 = new Objects(Math.round(cWidth*3/5)-(blockHeight*2),Math.round(cHeight/2),Math.round(blockHeight*3/2),blockHeight,"./sprites/crate.png", 'left')
@@ -362,8 +362,6 @@ function movement(){
             defaultSetting()
             frog.gravityUpdate()
             mask.gravityUpdate()
-
-
             if(mask.jump.gravity != 0 &&grid[mask.x+mask.width][mask.y+mask.height]=='taken'||grid[mask.x][mask.y+mask.height+mask.jump.gravity]=='taken'){
                 mask.jump.gravity =0
                 mask.jump.up =0
