@@ -57,11 +57,6 @@ endButton.addEventListener('click',function(){
 startButton.addEventListener('click',startGame)
 
 const ctx = canvas.getContext('2d')
-function display (){
-    message.style.display = 'inline'
-    startButton.style.display ='none'
-    endButton.style.display = "inline-block"
-}
 
 
 let cWidth = parseInt(window.getComputedStyle(canvas)['width'])
