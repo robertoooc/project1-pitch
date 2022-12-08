@@ -17,7 +17,6 @@ let endGame = false
 let user1 = false
 backToMenu.style.display ='none'
 
-
 backToMenu.addEventListener('click',function(){
     message.style.display = 'none'
     scoreBoard.style.display= 'none'
@@ -36,11 +35,11 @@ menuStart.addEventListener('click',function(){
 instructions.addEventListener('click',function(){
     scoreBoard.style.display ="none"
     instructionsMessage.style.display ="block"
-    //scoreBoard.innerText = 'Welcome to Piglet Run, to begin a new Game press the Start playing Button\n This is a multiplayer game, a predator/(the butcher) and prey/(piglet) situation\n the keys to control the butcher are W/(jump) A/(shift left) D/(shift right)\n The keys to control piglet are  \n To check the scoreBoard press the Score Board button \n '
+
 })
 score.addEventListener('click',function(){
     instructionsMessage.style.display ="none"
-    scoreBoard.innerText = `Mask wins: ${piglet.wins} \n Frog wins: ${butcher.wins} \n number of games: ${Players.numGames}`
+    scoreBoard.innerText = `Mask wins: ${mask.wins} \n Frog wins: ${frog.wins} \n number of games: ${Players.numGames}`
     scoreBoard.style.display = 'block'
 })
 startButton.style.display ='none'
@@ -51,7 +50,7 @@ endButton.addEventListener('click',function(){
     startButton.style.display = "inline-block"    
 })
 startButton.addEventListener('click',startGame)
-//let p = document.querySelector('p')
+
 const ctx = canvas.getContext('2d')
 
 
@@ -66,7 +65,7 @@ while(check==false){
     cHeight % 10!==0 ? cHeight++ : checkheight = true
     checkwidth&&checkheight ? check=true : check =false
 }
-//console.log(cWidth, cHeight)
+
 canvas.setAttribute('height',cHeight.toString())
 canvas.setAttribute('width',cWidth.toString())
 let grid = []
@@ -91,10 +90,10 @@ function startGame(){
     endGame = false
     startButton.style.display ='none'
     endButton.style.display = "inline-block"
-    piglet.x = 0
-    piglet.y = 10
-     butcher.x = cWidth-playerSize
-     butcher.y = 10
+    mask.x = 0
+    mask.y = 10
+     frog.x = cWidth-playerSize
+     frog.y = 10
     animate()  
 }
 
@@ -133,7 +132,7 @@ class Objects{
         if(this.direction=='right'){
             if(typeof(grid[this.x+this.width+1][this.y])=='string'){
                 this.direction ='left'
-                ///console.log('stop')
+
             }
             for(let i = this.x; i <=this.x+this.width; i++){
                 for(let j = this.y; j<=this.y+this.height; j++){
@@ -268,56 +267,56 @@ class Players{
 
 
 
-let butcher = new Players('frog',50,70,'./sprites/frogRunLeft(32x32).png')
-let piglet = new Players('mask',5,10,'./sprites/maskRunRight(32x32).png')
+let frog = new Players('frog',50,70,'./sprites/frogRunLeft(32x32).png')
+let mask = new Players('mask',5,10,'./sprites/maskRunRight(32x32).png')
 const jumpVar = Math.round(cHeight/62)
 function movement(){
-        if(pressedKeys.ArrowUp&&butcher.jump.gravity<=1 ){
-        if((typeof(grid[butcher.x][butcher.y])!='string')&&typeof(grid[butcher.x][butcher.y+butcher.height])!='string'){
-            butcher.jump.up +=jumpVar
-            butcher.platform = false
-            butcher.frameNum =0
+        if(pressedKeys.ArrowUp&&frog.jump.gravity<=1 ){
+        if((typeof(grid[frog.x][frog.y])!='string')&&typeof(grid[frog.x][frog.y+frog.height])!='string'){
+            frog.jump.up +=jumpVar
+            frog.platform = false
+            frog.frameNum =0
 
         }
         }             
-        if(pressedKeys.w&&piglet.jump.gravity<=1){
-        if((typeof(grid[piglet.x][piglet.y])!='string')&&typeof(grid[piglet.x][piglet.y+piglet.height])!='string'){
-            piglet.jump.up += jumpVar
-            piglet.platform = false  
-            piglet.frameNum =0              
+        if(pressedKeys.w&&mask.jump.gravity<=1){
+        if((typeof(grid[mask.x][mask.y])!='string')&&typeof(grid[mask.x][mask.y+mask.height])!='string'){
+            mask.jump.up += jumpVar
+            mask.platform = false  
+            mask.frameNum =0              
         }
         }
             if(pressedKeys.ArrowLeft){
-                if((typeof(grid[(butcher.x)-speed][butcher.y])!='string')&&(typeof(grid[(butcher.x)-speed][butcher.y+butcher.height])!='string')){
+                if((typeof(grid[(frog.x)-speed][frog.y])!='string')&&(typeof(grid[(frog.x)-speed][frog.y+frog.height])!='string')){
 
-                    butcher.image.src = './sprites/frogRunLeft(32x32).png'
-                    butcher.frameNum ==11 ? butcher.frameNum=0:butcher.frameNum++
-                    butcher.x -= speed
+                    frog.image.src = './sprites/frogRunLeft(32x32).png'
+                    frog.frameNum ==11 ? frog.frameNum=0:frog.frameNum++
+                    frog.x -= speed
                 }
             }
             if( pressedKeys.a){
-                if((typeof(grid[(piglet.x)-speed][piglet.y])!='string')&&(typeof(grid[(piglet.x)-speed][piglet.y+piglet.height])!='string')){
+                if((typeof(grid[(mask.x)-speed][mask.y])!='string')&&(typeof(grid[(mask.x)-speed][mask.y+mask.height])!='string')){
 
 
-                    piglet.image.src = './sprites/maskRunLeft(32x32).png'
-                    piglet.frameNum ==11 ? piglet.frameNum=0:piglet.frameNum++
-                    piglet.x -= speed
+                    mask.image.src = './sprites/maskRunLeft(32x32).png'
+                    mask.frameNum ==11 ? mask.frameNum=0:mask.frameNum++
+                    mask.x -= speed
                 }
             }
             if(pressedKeys.ArrowRight){
-                if((typeof(grid[(butcher.x+butcher.width)+speed][butcher.y])!='string')&&(typeof(grid[(butcher.x+butcher.width)+speed][butcher.y+butcher.height])!='string')){
+                if((typeof(grid[(frog.x+frog.width)+speed][frog.y])!='string')&&(typeof(grid[(frog.x+frog.width)+speed][frog.y+frog.height])!='string')){
 
-                    butcher.image.src = './sprites/frogRunRight(32x32).png'
-                    butcher.frameNum ==11 ? butcher.frameNum=0:butcher.frameNum++
-                    butcher.x +=speed
+                    frog.image.src = './sprites/frogRunRight(32x32).png'
+                    frog.frameNum ==11 ? frog.frameNum=0:frog.frameNum++
+                    frog.x +=speed
                 }
             }
             if(pressedKeys.d){
-                if((typeof(grid[(piglet.x+piglet.width)+speed][piglet.y])!='string')&&(typeof(grid[(piglet.x+piglet.width)+speed][piglet.y+piglet.height])!='string')){
+                if((typeof(grid[(mask.x+mask.width)+speed][mask.y])!='string')&&(typeof(grid[(mask.x+mask.width)+speed][mask.y+mask.height])!='string')){
 
-                    piglet.image.src = './sprites/maskRunRight(32x32).png'
-                    piglet.frameNum ==11 ? piglet.frameNum=0:piglet.frameNum++
-                    piglet.x += speed
+                    mask.image.src = './sprites/maskRunRight(32x32).png'
+                    mask.frameNum ==11 ? mask.frameNum=0:mask.frameNum++
+                    mask.x += speed
                 }                        
             }
 
@@ -361,22 +360,22 @@ function movement(){
 
         function animate(){
             defaultSetting()
-            butcher.gravityUpdate()
-            piglet.gravityUpdate()
-            console.log(piglet.platform, butcher.platform)
+            frog.gravityUpdate()
+            mask.gravityUpdate()
 
-            if(piglet.jump.gravity != 0 &&grid[piglet.x+piglet.width][piglet.y+piglet.height]=='taken'||grid[piglet.x][piglet.y+piglet.height+piglet.jump.gravity]=='taken'){
-                piglet.jump.gravity =0
-                piglet.jump.up =0
-                piglet.platform = true
+
+            if(mask.jump.gravity != 0 &&grid[mask.x+mask.width][mask.y+mask.height]=='taken'||grid[mask.x][mask.y+mask.height+mask.jump.gravity]=='taken'){
+                mask.jump.gravity =0
+                mask.jump.up =0
+                mask.platform = true
 
             }
-            if(butcher.jump.gravity != 0 &&grid[butcher.x+butcher.width][butcher.y+butcher.height]=='taken'||grid[butcher.x][butcher.y+butcher.height+butcher.jump.gravity]=='taken'){
-                butcher.jump.gravity =0
-                butcher.jump.up =0
-                butcher.platform = true
+            if(frog.jump.gravity != 0 &&grid[frog.x+frog.width][frog.y+frog.height]=='taken'||grid[frog.x][frog.y+frog.height+frog.jump.gravity]=='taken'){
+                frog.jump.gravity =0
+                frog.jump.up =0
+                frog.platform = true
             }
-            user1 ==true ? obstacleBump(piglet,butcher,finishLine): obstacleBump(butcher,piglet,finishLine)
+            user1 ==true ? obstacleBump(mask,frog,finishLine): obstacleBump(frog,mask,finishLine)
             if(endGame==false){
                 requestAnimationFrame(animate)
             }

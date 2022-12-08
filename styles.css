@@ -1,5 +1,7 @@
 body{
     background-color: beige;
+    font-family:'Courier New', Courier, monospace;
+    font-size: 23px;
 }
 main{
     margin: 0 auto;
@@ -13,6 +15,8 @@ display: block;
 }
 button{
     margin: 1vw;
+    border: solid rgb(47, 45, 45);
+    border-radius: 5px;
 }
 canvas{
      width: 100%;
@@ -21,10 +25,10 @@ canvas{
 #message{
     width: 30vw;
     height: auto;
-    background-color: aliceblue;
+    background-color: rgba(164, 222, 157, 0.559);
+    border-radius: 5px;
     margin: 20px;
-    padding: 10px;
-    font-size: 30px;
+    padding: 13px;
     
 
 }
