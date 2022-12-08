@@ -14,6 +14,7 @@ let message = document.getElementById('message')
 instructionsMessage.style.display ="none"
 message.style.display = 'none'
 let endGame = false
+let user1 = false
 backToMenu.style.display ='none'
 
 
@@ -39,7 +40,7 @@ instructions.addEventListener('click',function(){
 })
 score.addEventListener('click',function(){
     instructionsMessage.style.display ="none"
-    scoreBoard.innerText = `piglet wins: ${piglet.wins} \n butcher wins: ${butcher.wins} \n number of games: ${Players.numGames}`
+    scoreBoard.innerText = `Mask wins: ${piglet.wins} \n Frog wins: ${butcher.wins} \n number of games: ${Players.numGames}`
     scoreBoard.style.display = 'block'
 })
 startButton.style.display ='none'
@@ -76,19 +77,24 @@ for(let i = 0; i <=cWidth; i++){
     }
 }
 function startGame(){
-    message.style.display = 'none'
+
+    if(user1==true){
+        user1 = false
+        message.innerText = `It's the Mask's turn to chase the Frog`
+    }
+    else{
+        user1 = true
+        message.innerText= `It's the Frog's turn to chase the Mask`
+    }
+    message.style.display = 'inline'
     Players.numGames++
     endGame = false
     startButton.style.display ='none'
     endButton.style.display = "inline-block"
-     piglet.x = 0
-     piglet.y = 10
+    piglet.x = 0
+    piglet.y = 10
      butcher.x = cWidth-playerSize
      butcher.y = 10
-     //piglet.direction = 'right'
-                    //piglet.imageSrc = 'sprites/maskRunRight(32x32).png'
-                    //butcher.direction = 'left'
-                    //butcher.imageSrc = 'sprites/frogRunRight(32x32).png'
     animate()  
 }
 
@@ -99,7 +105,6 @@ class Objects{
         this.y = y
         this.width = width
         this.height = height
-        //this.color = color
         this.direction = ' '
         this.image = new Image()
         this.image.src = imageSrc
@@ -110,8 +115,6 @@ class Objects{
                 grid[i][j]='taken'
             }
         }
-        //ctx.fillStyle=this.color
-        //ctx.fillRect(this.x,this.y,this.width,this.height)
         ctx.drawImage(this.image,this.x,this.y,this.width,this.height)
     }
     moving(){
@@ -140,13 +143,7 @@ class Objects{
             this.x++
 
         }
-        //console.log(this.direction)
-        
-        //this.x++
         this.create()
-    }
-    animation(){
-
     }
     end(){
         this.create()
@@ -177,8 +174,8 @@ let blockHeight = Math.round(cWidth/37)
 let playerSize = Math.round(blockHeight*9/8)
 let topWidth = Math.round(cWidth/3)
 let topRowHeight = Math.round(cHeight/8)
-let block3 = new Objects(0,topRowHeight,topWidth,blockHeight,"./sprites/2.png") //90 
-let block = new Objects(cWidth-(topWidth),topRowHeight,topWidth,blockHeight,"./sprites/2.png") //90 
+let block3 = new Objects(0,topRowHeight,topWidth,blockHeight,"./sprites/2.png") 
+let block = new Objects(cWidth-(topWidth),topRowHeight,topWidth,blockHeight,"./sprites/2.png")  
 let block4 = new Objects(Math.round((cWidth/5)*2),topRowHeight*2+blockHeight,Math.round(cWidth/5),blockHeight,"./sprites/2.png")
 let block5 = new Objects(topWidth,(topRowHeight*2)+(blockHeight)*2,topWidth,blockHeight,"./sprites/2.png")
 let block6 = new Objects((Math.round(topWidth*3/4)),(topRowHeight*2)+(blockHeight*3),Math.round(cWidth/2),blockHeight,"./sprites/2.png")
@@ -200,7 +197,7 @@ obstacle6.direction = 'left'
 let obstacle5 = new Objects((Math.round(topWidth*2/4))+Math.round(cWidth*1/4)+blockHeight,Math.round(cHeight/2),Math.round(blockHeight*3/2),blockHeight,"./sprites/crate.png",'right')
 obstacle5.direction = 'right'
 const speed = Math.round(cWidth/48)
-//console.log(playerSize)
+
 const downAccelerate = 1
 
 class Players{
@@ -258,26 +255,11 @@ class Players{
             this.drawVar = this.frameNum*32
         }
 
-            // if((this.jump.gravity<2)){
-            // this.drawVar = this.frameNum*32
-            // }
-            //     else if(this.jump.gravity < this.jump.up){
-            //     this.image.src = `./sprites/${this.name}Jump(32x32).png`
-            //     this.drawVar = 0
-            // }
-            // // else if(this.jump.gravity>= this.jump.up){
-            // //     this.image.src =`./sprites/${this.name}Fall(32x32).png`
-            // //     this.drawVar = 0
-            // // }
-            // else{
-            //     this.image.src = `./sprites/${this.name}Idle(32x32).png`
-            //     this.frameNum ==10 ? this.frameNum=0:this.frameNum++
-            //     this.drawVar = this.frameNum*32
-            // }
+
             ctx.drawImage(this.image,this.drawVar,0,32,32,this.x,this.y,this.width,this.height)
         }
 
-            //console.log(this.image.src,this.image,this.drawVar,0,32,32,this.x,this.y,this.width,this.height)
+
 
 
     
@@ -285,7 +267,7 @@ class Players{
         
 
 
-//sprites/frogRunLeft(32x32) copy.png, 
+
 let butcher = new Players('frog',50,70,'./sprites/frogRunLeft(32x32).png')
 let piglet = new Players('mask',5,10,'./sprites/maskRunRight(32x32).png')
 const jumpVar = Math.round(cHeight/62)
@@ -315,7 +297,7 @@ function movement(){
             }
             if( pressedKeys.a){
                 if((typeof(grid[(piglet.x)-speed][piglet.y])!='string')&&(typeof(grid[(piglet.x)-speed][piglet.y+piglet.height])!='string')){
-                    //piglet.direction = 'left'
+
 
                     piglet.image.src = './sprites/maskRunLeft(32x32).png'
                     piglet.frameNum ==11 ? piglet.frameNum=0:piglet.frameNum++
@@ -324,7 +306,7 @@ function movement(){
             }
             if(pressedKeys.ArrowRight){
                 if((typeof(grid[(butcher.x+butcher.width)+speed][butcher.y])!='string')&&(typeof(grid[(butcher.x+butcher.width)+speed][butcher.y+butcher.height])!='string')){
-                    //butcher.direction = 'right'
+
                     butcher.image.src = './sprites/frogRunRight(32x32).png'
                     butcher.frameNum ==11 ? butcher.frameNum=0:butcher.frameNum++
                     butcher.x +=speed
@@ -332,7 +314,7 @@ function movement(){
             }
             if(pressedKeys.d){
                 if((typeof(grid[(piglet.x+piglet.width)+speed][piglet.y])!='string')&&(typeof(grid[(piglet.x+piglet.width)+speed][piglet.y+piglet.height])!='string')){
-                    //piglet.direction = 'right'
+
                     piglet.image.src = './sprites/maskRunRight(32x32).png'
                     piglet.frameNum ==11 ? piglet.frameNum=0:piglet.frameNum++
                     piglet.x += speed
@@ -341,7 +323,6 @@ function movement(){
 
 
 
-            //console.log(butcher.image.src)
         }
         function defaultSetting(){
             background.create()
@@ -377,26 +358,25 @@ function movement(){
                 movement()         
             }            
         }) 
-        //animate()
+
         function animate(){
             defaultSetting()
             butcher.gravityUpdate()
             piglet.gravityUpdate()
             console.log(piglet.platform, butcher.platform)
-            //console.log(piglet.imageSrc)
+
             if(piglet.jump.gravity != 0 &&grid[piglet.x+piglet.width][piglet.y+piglet.height]=='taken'||grid[piglet.x][piglet.y+piglet.height+piglet.jump.gravity]=='taken'){
                 piglet.jump.gravity =0
                 piglet.jump.up =0
                 piglet.platform = true
-                //piglet.image.src = './sprites/maskFall(32x32).png'
+
             }
             if(butcher.jump.gravity != 0 &&grid[butcher.x+butcher.width][butcher.y+butcher.height]=='taken'||grid[butcher.x][butcher.y+butcher.height+butcher.jump.gravity]=='taken'){
                 butcher.jump.gravity =0
                 butcher.jump.up =0
                 butcher.platform = true
-                //butcher.image.src = './sprites/frogFall(32x32).png'
             }
-            obstacleBump(piglet,butcher,finishLine)
+            user1 ==true ? obstacleBump(piglet,butcher,finishLine): obstacleBump(butcher,piglet,finishLine)
             if(endGame==false){
                 requestAnimationFrame(animate)
             }
@@ -412,15 +392,16 @@ function movement(){
                 let rSide = obj1.x + obj1.width <= obj2.x 
                 let lSide = obj2.x + obj2.width <= obj1.x
                 if(bSide==false&&tSide==false&&lSide==false&&rSide==false){
-                    butcher.wins++
+                   obj2.wins++
                    endGame = true
                    message.style.display = "inline"
-                   message.innerText = `The butcher is the Winner!!`
+                
+                   message.innerText = `The ${obj2.name.toUpperCase()} is the Winner!!`
                 }
                 if(grid[obj1.x][obj1.y]==0){
-                    piglet.wins++
+                    obj1.wins++
                     message.style.display = "inline" 
-                    message.innerText = `Piglet is the Winner!!`
+                    message.innerText = `${obj1.name.toUpperCase()} is the Winner!!`
                     endGame = true
                 }
     }
