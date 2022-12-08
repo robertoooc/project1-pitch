@@ -222,6 +222,7 @@ class Players{
         this.numImgs = 0 
         this.frameNum = 0
         this.drawVar = ' '
+        this.platform = true
         
     }
     create(){
@@ -229,18 +230,12 @@ class Players{
         ctx.fillRect(this.x,this.y,this.width,this.height)
         }           
     gravityUpdate(){   
-        //console.log(this.imageSrc)
-        
         this.y+=this.jump.gravity
-
         if(grid[this.x][this.y]!='taken'){
-            //this.direction = 'jump'
             this.y-=this.jump.up
         }
         if((this.y + this.height + this.jump.gravity < cHeight)){
-            //this.direction= 'right'
-            this.jump.gravity+=downAccelerate
-            this.count++             
+            this.jump.gravity+=downAccelerate        
         }
         else{
             this.jump.gravity = 0
@@ -248,74 +243,66 @@ class Players{
             this.count =0
         }
 
-        // if(this.jump.gravity<1){
-        //     if(this.name=='frog'){
-        //         this.jump.gravity <this.jump.up ? this.image.src = 'sprites/frogJump(32x32).png':this.image.src ='sprites/frogFall(32x32).png'
-        //     }
-        //     else{
-        //         this.jump.gravity <this.jump.up ? this.image.src = 'sprites/maskJump(32x32).png':this.image.src ='sprites/maskFall(32x32).png'
-        //     }
-        //     //this.name == 'frog' ? this.image.src ='sprites/frogFall(32x32).png' : this.image.src ='sprites/maskFall(32x32).png' 
-        //     ctx.drawImage(this.image,this.x,this.y,this.width,this.height)
-        // }
-        // if(this.jump.gravity<2){
-        //     this.numImgs = 12
-        //     if(this.frameNum == this.numIgs){
-        //         this.frameNum = 0
-        //     }
-        //     ctx.drawImage(this.image,this.frameNum*32,0,32,32, this.x, this.y, this.width, this.height)
-        //     this.count++
-        // }
-        //console.log(this.image.src)
-        // if((this.jump.gravity <2) &&(this.image.src !== `sprites/${this.name}Fall(32x32).png`)){
-            //     console.log('yes')
-            //     this.drawVar = 0
-            // }
-            // else if(this.jump.gravity<2){
-                //     this.drawVar = this.frameNum*32
-                // }
-                //console.log(this.image.src)
-            if((this.jump.gravity<2)){
-                if(this.image.src != `./sprites/${this.name}Fall(32x32).png`){
-                    this.drawVar = this.frameNum*32
-                    console.log(this.image.src != `./sprites/${this.name}Fall(32x32).png`)
-                }
-                else{
-                    this.drawVar = 0
-                    console.log('no')
-                }
-            }//put everything underneath in an else
-            else if(this.jump.gravity < this.jump.up){
+        if(this.platform==false){
+            if(this.jump.gravity < this.jump.up){
                 this.image.src = `./sprites/${this.name}Jump(32x32).png`
                 this.drawVar = 0
             }
-            else{
-                this.image.src =`./sprites/${this.name}Fall(32x32).png`
-                this.drawVar = 0
-            }
+            else if(this.jump.gravity>= this.jump.up && this.jump.gravity >2){
+                this.image.src = `./sprites/${this.name}Idle(32x32).png`
+                this.frameNum ==10 ? this.frameNum=0:this.frameNum++
+                this.drawVar = this.frameNum*32
+            } 
+        }
+        if(this.platform==true){
+            this.drawVar = this.frameNum*32
+        }
+
+            // if((this.jump.gravity<2)){
+            // this.drawVar = this.frameNum*32
+            // }
+            //     else if(this.jump.gravity < this.jump.up){
+            //     this.image.src = `./sprites/${this.name}Jump(32x32).png`
+            //     this.drawVar = 0
+            // }
+            // // else if(this.jump.gravity>= this.jump.up){
+            // //     this.image.src =`./sprites/${this.name}Fall(32x32).png`
+            // //     this.drawVar = 0
+            // // }
+            // else{
+            //     this.image.src = `./sprites/${this.name}Idle(32x32).png`
+            //     this.frameNum ==10 ? this.frameNum=0:this.frameNum++
+            //     this.drawVar = this.frameNum*32
+            // }
+            ctx.drawImage(this.image,this.drawVar,0,32,32,this.x,this.y,this.width,this.height)
+        }
 
             //console.log(this.image.src,this.image,this.drawVar,0,32,32,this.x,this.y,this.width,this.height)
-        ctx.drawImage(this.image,this.drawVar,0,32,32,this.x,this.y,this.width,this.height)
 
 
     
     }
         
 
-}
+
 //sprites/frogRunLeft(32x32) copy.png, 
 let butcher = new Players('frog',50,70,'./sprites/frogRunLeft(32x32).png')
 let piglet = new Players('mask',5,10,'./sprites/maskRunRight(32x32).png')
 const jumpVar = Math.round(cHeight/62)
 function movement(){
-        if(pressedKeys.ArrowUp&&butcher.jump.gravity==0 ){
+        if(pressedKeys.ArrowUp&&butcher.jump.gravity<=1 ){
         if((typeof(grid[butcher.x][butcher.y])!='string')&&typeof(grid[butcher.x][butcher.y+butcher.height])!='string'){
             butcher.jump.up +=jumpVar
+            butcher.platform = false
+            butcher.frameNum =0
+
         }
         }             
-        if(pressedKeys.w&&piglet.jump.gravity==0){
+        if(pressedKeys.w&&piglet.jump.gravity<=1){
         if((typeof(grid[piglet.x][piglet.y])!='string')&&typeof(grid[piglet.x][piglet.y+piglet.height])!='string'){
-            piglet.jump.up += jumpVar                
+            piglet.jump.up += jumpVar
+            piglet.platform = false  
+            piglet.frameNum =0              
         }
         }
             if(pressedKeys.ArrowLeft){
@@ -323,7 +310,6 @@ function movement(){
 
                     butcher.image.src = './sprites/frogRunLeft(32x32).png'
                     butcher.frameNum ==11 ? butcher.frameNum=0:butcher.frameNum++
-                    console.log(butcher.image.src)
                     butcher.x -= speed
                 }
             }
@@ -352,6 +338,10 @@ function movement(){
                     piglet.x += speed
                 }                        
             }
+
+
+
+            //console.log(butcher.image.src)
         }
         function defaultSetting(){
             background.create()
@@ -392,14 +382,19 @@ function movement(){
             defaultSetting()
             butcher.gravityUpdate()
             piglet.gravityUpdate()
+            console.log(piglet.platform, butcher.platform)
             //console.log(piglet.imageSrc)
             if(piglet.jump.gravity != 0 &&grid[piglet.x+piglet.width][piglet.y+piglet.height]=='taken'||grid[piglet.x][piglet.y+piglet.height+piglet.jump.gravity]=='taken'){
                 piglet.jump.gravity =0
                 piglet.jump.up =0
+                piglet.platform = true
+                //piglet.image.src = './sprites/maskFall(32x32).png'
             }
             if(butcher.jump.gravity != 0 &&grid[butcher.x+butcher.width][butcher.y+butcher.height]=='taken'||grid[butcher.x][butcher.y+butcher.height+butcher.jump.gravity]=='taken'){
                 butcher.jump.gravity =0
                 butcher.jump.up =0
+                butcher.platform = true
+                //butcher.image.src = './sprites/frogFall(32x32).png'
             }
             obstacleBump(piglet,butcher,finishLine)
             if(endGame==false){
