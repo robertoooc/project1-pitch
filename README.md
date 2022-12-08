@@ -1,6 +1,8 @@
 # Tag
 Originally intended to just be a basic hunter and prey scenario game where one player was supposed to be a butcher with the goal of chasing down and tagging the second user before they could get to the end of the map. The theme evolved into a tag game where the roles of the two players alternate. In this new version of the original game, it is a two player tag game. The two players are placed in a setting with platforms that they need to jump or fall onto and also encounter some obstacles to give them a little bit of a tough time. The game displays a message saying who is supposed to be tagged, the person who is supposed to be tagged has to get to the bottom of the map on either of the two finish lines before being tagged by the other user. After every game the roles switch so both users can get the full experience. The game also comes with some short instructions on how to play it along with an option to check your score. 
 
+## Link
+[deployed game link](https://robertoooc.github.io/project1-pitch/)
 
 
 
